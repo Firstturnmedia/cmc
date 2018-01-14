@@ -42,7 +42,7 @@ dependencies:
   #- features
   #- features_ui
   # CMB modules
-  - cmb_landing_page
+  #- cmb_landing_page
 themes:
   - bartik
   - seven
