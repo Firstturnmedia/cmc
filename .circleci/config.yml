@@ -2,7 +2,7 @@
 defaults: &defaults
   docker:
     - image: quay.io/pantheon-public/build-tools-ci:1.x
-  working_directory: ~/example_drops_8_composer
+  working_directory: ~/drops_8_composer
   environment:
     #=========================================================================
     # In addition to the environment variables defined in this file, also
@@ -36,6 +36,9 @@ defaults: &defaults
     # BUILD_TOOLS_VERSION: ^2.0.0-alpha4
     TERM: dumb
 
+    # Git commit message
+    GIT_COMMIT_DESC: "Circle CI Build $CIRCLE_BUILD_URL"
+
 version: 2
 jobs:
     # @todo: common initialization: 'composer install' for the site-under-test
@@ -44,25 +47,15 @@ jobs:
         steps:
             - checkout
 
+            - run:
+                name: Generate Full Repo
+                command: |
+                  echo "Running composer build-assets to generate the full repo..."
+                  composer -n build-assets
+
             - restore_cache:
                 keys:
-                    - composer-cache
                     - terminus-install
-
-            - run:
-                # Set TERMINUS_ENV and related environment variables.
-                # https://github.com/pantheon-systems/docker-build-tools-ci/blob/1.x/scripts/set-environment
-                name: environment
-                command: /build-tools-ci/scripts/set-environment
-
-            - run:
-                name: run composer install to get the vendor directory
-                command: composer install
-
-            - save_cache:
-                key: composer-cache
-                paths:
-                    - $HOME/.composer/cache
 
             - save_cache:
                 key: terminus-install
@@ -70,16 +63,23 @@ jobs:
                     - $(TERMINUS_PLUGINS_DIR:-~/.terminus/plugins)
 
             - run:
-                name: lint php code for syntax errors
-                command: composer -n lint
+                name: Generate Full Repo Sanity Checks
+                command: |
+                  pwd
+                  git status
+                  terminus --version
 
             - run:
-                name: check coding standards
-                command: composer -n code-sniff
+                # I don't know if this does anything?
+                # Set TERMINUS_ENV and related environment variables.
+                # https://github.com/pantheon-systems/docker-build-tools-ci/blob/1.x/scripts/set-environment
+                name: environment
+                command: /build-tools-ci/scripts/set-environment
 
             - run:
-                name: run unit tests
-                command: composer -n unit-test
+                name: Deploy to Pantheon
+                command: |
+                  .circleci/scripts/custom/deploy-pantheon.sh
 
     build_deploy_and_test:
         <<: *defaults
@@ -88,43 +88,7 @@ jobs:
 
             - restore_cache:
                 keys:
-                    - composer-cache
                     - terminus-install
-
-            - run:
-                # Set TERMINUS_ENV and related environment variables.
-                # https://github.com/pantheon-systems/docker-build-tools-ci/blob/1.x/scripts/set-environment
-                name: dependencies
-                command: /build-tools-ci/scripts/set-environment
-
-            - run:
-                name: install dev dependencies, build assets, etc.
-                command: ./.circleci/scripts/pantheon/01-prepare
-
-            - run:
-                name: build assets
-                command: composer -n build-assets
-
-            - run:
-                name: prepare database for site-under test
-                command: ./.circleci/scripts/pantheon/02-init-site-under-test-clone-existing
-                # command: ./.circleci/scripts/pantheon/02-init-site-under-test-reinstall-new
-
-            - run:
-                name: run functional tests with Behat
-                command: ./tests/scripts/run-behat
-
-            - run:
-                name: post-test actions
-                command: ./.circleci/scripts/pantheon/03-post-test
-
-            - run:
-                name: handle merge to master (if needed)
-                command: ./.circleci/scripts/pantheon/04-merge-master
-
-            - run:
-                name: remove transient test fixtures
-                command: ./.circleci/scripts/pantheon/09-cleanup-fixtures
 
     # TODO:
     # 04-merge-master
