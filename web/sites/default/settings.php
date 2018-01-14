@@ -37,4 +37,16 @@ if (file_exists($local_settings)) {
  *
  * See: tests/installer-features/installer.feature
  */
-$settings['install_profile'] = 'standard';
+//$settings['install_profile'] = 'standard';
+$databases['default']['default'] = array (
+  'database' => 'cmc',
+  'username' => 'root',
+  'password' => 'root',
+  'prefix' => '',
+  'host' => 'localhost',
+  'port' => '8889',
+  'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
+  'driver' => 'mysql',
+);
+$settings['hash_salt'] = 'JcMobm-rt9h0B8umr6X_AXttNIQV0jrechlfgyukvPa69ddgGGGWwiKIrF7CHi3Ler5tuMOJ6g';
+$settings['install_profile'] = 'cm_bootstrap';
