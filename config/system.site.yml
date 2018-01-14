@@ -1,0 +1,14 @@
+uuid: 1417c1a2-bb59-4c57-9d61-4a98cacec81b
+name: CMC
+mail: bill@firstturnmedia.com
+slogan: ''
+page:
+  403: ''
+  404: ''
+  front: /user/login
+admin_compact_mode: false
+weight_select_max: 100
+langcode: en
+default_langcode: en
+_core:
+  default_config_hash: AyT9s8OUcclfALRE_imByOMgtZ19eOlqdF6zI3p7yqo

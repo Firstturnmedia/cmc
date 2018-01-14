@@ -45,7 +45,10 @@ if [ "$CIRCLE_BRANCH" != "master" ]; then
   git push -f origin $CIRCLE_BRANCH
 
   # Run update.php
+
   # Run config-import -y
+  terminus -n drush "$TERMINUS_SITE.$CIRCLE_BRANCH" -- config-import --yes
+
   # Clear drupal cache
 fi
 
@@ -82,4 +85,8 @@ if [ "$CIRCLE_BRANCH" == "master" ]; then
 
   # Push code to dev
   git push -f origin master
+
+  # Run config-import -y
+  # @todo need to make this not hardcoded as dev
+  terminus -n drush $TERMINUS_SITE.dev -- config-import --yes
 fi
