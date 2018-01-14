@@ -88,5 +88,5 @@ if [ "$CIRCLE_BRANCH" == "master" ]; then
 
   # Run config-import -y
   # @todo need to make this not hardcoded as dev
-  terminus -n drush $TERMINUS_SITE.dev -- config-import --yes
+  #terminus -n drush $TERMINUS_SITE.dev -- config-import --yes
 fi
