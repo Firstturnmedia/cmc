@@ -1,0 +1,13 @@
+name: 'CMB Landing Page'
+description: 'Landing Page Content Type and Fields'
+type: module
+core: 8.x
+dependencies:
+  - field
+  - file
+  - image
+  - menu_ui
+  - node
+  - path
+  - user
+version: 8.x-1.0

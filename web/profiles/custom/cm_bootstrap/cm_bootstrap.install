@@ -1,0 +1,37 @@
+<?php
+
+/**
+ * @file
+ * Install and uninstall functions for the CM Bootstrap installation profile.
+ */
+
+use Drupal\user\Entity\User;
+use Drupal\user\RoleInterface;
+
+/**
+ * Implements hook_install().
+ *
+ * Perform actions to set up the site for CM Bootstrap Profile.
+ *
+ * @see system_install()
+ */
+function cm_bootstrap_install() {
+  // Assign user 1 the "administrator" role.
+  $user = User::load(1);
+  $user->roles[] = 'administrator';
+  $user->save();
+
+  // Set the default and admin theme.
+  // Themes are installed when listed as dependencies in .info.yml, they are enabled here.
+  \Drupal::configFactory()
+    ->getEditable('system.theme')
+    ->set('default', 'cmb_theme')
+    ->set('admin', 'seven')
+    ->save(TRUE);
+
+  // Enable the admin theme.
+  \Drupal::configFactory()
+    ->getEditable('node.settings')
+    ->set('use_admin_theme', TRUE)
+    ->save(TRUE);
+}

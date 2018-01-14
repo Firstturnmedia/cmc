@@ -1,0 +1,49 @@
+name: CM Bootstrap
+core: 8.x
+type: profile
+description: 'CM Bootstrap description.'
+distribution:
+  name: CM Bootstrap
+dependencies:
+  # Core modules
+  - node
+  - history
+  - block
+  - breakpoint
+  - ckeditor
+  - color
+  - config
+  - contextual
+  - menu_link_content
+  - datetime
+  - block_content
+  - quickedit
+  - editor
+  - help
+  - image
+  - menu_ui
+  - options
+  - path
+  - page_cache
+  - dynamic_page_cache
+  - taxonomy
+  - dblog
+  - search
+  - shortcut
+  - toolbar
+  - field_ui
+  - file
+  - rdf
+  - views
+  - views_ui
+  - tour
+  - automated_cron
+  # Contrib modules
+  #- features
+  #- features_ui
+  # CMB modules
+  - cmb_landing_page
+themes:
+  - bartik
+  - seven
+  - cmb_theme
