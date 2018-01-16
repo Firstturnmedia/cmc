@@ -45,6 +45,7 @@ if [ "$CIRCLE_BRANCH" != "master" ]; then
   git push -f origin $CIRCLE_BRANCH
 
   # Run update.php
+  terminus -n drush "$TERMINUS_SITE.$CIRCLE_BRANCH" -- updatedb -y
 
   # Run config-import -y
   terminus -n drush "$TERMINUS_SITE.$CIRCLE_BRANCH" -- config-import --yes
