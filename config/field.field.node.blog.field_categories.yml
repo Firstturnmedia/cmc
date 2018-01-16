@@ -1,0 +1,31 @@
+uuid: 712ddd64-de9c-4d0f-9921-0e23a4957313
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_categories
+    - node.type.blog
+    - taxonomy.vocabulary.interests
+    - taxonomy.vocabulary.volunteerism_engagement
+id: node.blog.field_categories
+field_name: field_categories
+entity_type: node
+bundle: blog
+label: Categories
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      interests: interests
+      volunteerism_engagement: volunteerism_engagement
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: interests
+field_type: entity_reference

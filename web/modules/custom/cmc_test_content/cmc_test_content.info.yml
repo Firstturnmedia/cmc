@@ -1,0 +1,5 @@
+name: CMC Test Content
+type: module
+description: Test content for CMC
+core: 8.x
+package: CMC
