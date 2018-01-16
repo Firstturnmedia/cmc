@@ -1,0 +1,46 @@
+<?php
+
+use Drupal\taxonomy\Entity\Term;
+
+/**
+ * Implements hook_install().
+ */
+function cmc_test_content_install() {
+  // Create test taxonomy terms for "interests" vocab
+  $interests_vocabulary = 'interests';
+
+  // Terms
+  $interests = [
+    'Political',
+    'Religious',
+    'Sports',
+  ];
+
+  // Create terms
+  foreach ($interests as $interest) {
+    $term = Term::create([
+      'parent' => array(),
+      'name' => $interest,
+      'vid' => $interests_vocabulary,
+    ])->save();
+  }
+
+  // Create test taxonomy terms for "volunteerism_engagement" vocab
+  $volunteerism_engagement_vocabulary = 'volunteerism_engagement';
+
+  // Terms
+  $volunteerism_engagements = [
+    'Social',
+    'Learning',
+    'Editing',
+  ];
+
+  // Create terms
+  foreach ($volunteerism_engagements as $volunteerism_engagement) {
+    $term = Term::create([
+      'parent' => array(),
+      'name' => $volunteerism_engagement,
+      'vid' => $volunteerism_engagement_vocabulary,
+    ])->save();
+  }
+}
