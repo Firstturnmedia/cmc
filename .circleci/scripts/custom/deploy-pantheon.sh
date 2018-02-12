@@ -38,12 +38,18 @@ if [ "$CIRCLE_BRANCH" != "master" ]; then
   git config user.email "${GIT_EMAIL}" && git config user.name "${CIRCLE_USERNAME}"
 
   # testing
+  echo ""
+  echo "raw git commit msg":
+  echo ""
+  echo $GIT_COMMIT_DESC
+  echo ""
   echo "Git commit msg: $GIT_COMMIT_DESC"
+  echo ""
 
   # Git add and commit
   git add -A
   git commit -m "Circle CI Build: ${CIRCLE_BUILD_URL} Git commit msg: ${GIT_COMMIT_DESC}"
-  
+
   # Push code to multidev
   git push -f origin $CIRCLE_BRANCH
 
