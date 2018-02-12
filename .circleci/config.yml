@@ -37,7 +37,7 @@ defaults: &defaults
     TERM: dumb
 
     # Git commit message
-    GIT_COMMIT_DESC: "Circle CI Build '${CIRCLE_BUILD_URL}'"
+    GIT_COMMIT_DESC: "Circle CI Build ${echo CIRCLE_BUILD_URL}"
 
 version: 2
 jobs:
