@@ -37,7 +37,8 @@ defaults: &defaults
     TERM: dumb
 
     # Git commit message
-    GIT_COMMIT_DESC: "Circle CI Build ${echo CIRCLE_BUILD_URL}"
+    # GIT_COMMIT_DESC: "Circle CI Build ${echo CIRCLE_BUILD_URL}"
+    GIT_COMMIT_DESC: git log --format=oneline -n 1 $CIRCLE_SHA1
 
 version: 2
 jobs:
