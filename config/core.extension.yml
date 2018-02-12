@@ -1,10 +1,13 @@
 module:
+  admin_toolbar: 0
+  admin_toolbar_tools: 0
   automated_cron: 0
   block: 0
   block_content: 0
   breakpoint: 0
   ckeditor: 0
   cmc_test_content: 0
+  cmc_webform: 0
   color: 0
   config: 0
   contextual: 0
@@ -37,6 +40,8 @@ module:
   update: 0
   user: 0
   views_ui: 0
+  webform: 0
+  webform_ui: 0
   menu_link_content: 1
   views: 10
   cm_bootstrap: 1000

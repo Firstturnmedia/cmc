@@ -1,0 +1,8 @@
+name: CMC Webform
+type: module
+description: CMC customizations for webform
+core: 8.x
+package: CMC
+dependencies:
+  - webform
+  - webform_ui

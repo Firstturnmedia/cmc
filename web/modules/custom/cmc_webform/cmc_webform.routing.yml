@@ -1,0 +1,7 @@
+cmc_webform.taxonomy_mapping:
+  path: '/admin/structure/webform/manage/{webform}/taxonomy-mapping'
+  defaults:
+    _title: 'CMC Webform - Taxonomy fields mapping'
+    _form: '\Drupal\cmc_webform\Form\CmcWebformTaxonomyMapping'
+  requirements:
+    _permission: 'edit webform assets'

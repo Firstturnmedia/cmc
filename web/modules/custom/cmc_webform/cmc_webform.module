@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * @file
+ * Contains cmc_webform.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function cmc_webform_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the cmc_webform module.
+    case 'help.page.cmc_webform':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('CMC customizations for webform') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function cmc_webform_theme() {
+  return [
+    'cmc_webform_taxonomy_mapping' => [
+      'render element' => 'form',
+    ],
+  ];
+}
