@@ -91,6 +91,9 @@ class CmcWebformTaxonomyMapping extends FormBase {
           // Replace spaces
           $webform_element_option_value = $this->replaceSpaces($webform_element_option_value);
 
+          // Set to false by default
+          $default_values = FALSE;
+
           // Iterate over webform taxonomy mapping and get the tids
           // Build a default values array of term entity objects
           if (isset($cmc_webform_taxonomy_mapping[$webform_element_key][$webform_element_option_value]['tids'])) {
@@ -101,10 +104,14 @@ class CmcWebformTaxonomyMapping extends FormBase {
             foreach ($cmc_webform_taxonomy_mapping[$webform_element_key][$webform_element_option_value]['tids'] as $tid) {
               // Load the term object
               $term_entity = \Drupal\taxonomy\Entity\Term::load($tid);
-              // Build an array of entity objects for the default values
-              $default_values[] = $term_entity;
 
-              // @todo add checks here for no terms
+              // Check if term_entity actually returned a value/object.
+              // If webform element was mapped to a taxonomy term that was deleted, it will
+              // no longer appear as a default_value now, rather than break the page.
+              if (isset($term_entity)) {
+                // Build an array of entity objects for the default values
+                $default_values[] = $term_entity;
+              }
             }
           }
 
@@ -116,7 +123,6 @@ class CmcWebformTaxonomyMapping extends FormBase {
 
           // Taxonomy entity autocomplete form element
           // @see https://www.drupal.org/node/2418529
-          // 
           $form['webform_container'][$webform_element_key][$webform_element_option_value . '_cmc_webform_taxonomy'] = [
             '#type' => 'entity_autocomplete',
             '#target_type' => 'taxonomy_term',
