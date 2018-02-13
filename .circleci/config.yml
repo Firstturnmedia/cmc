@@ -36,9 +36,6 @@ defaults: &defaults
     # BUILD_TOOLS_VERSION: ^2.0.0-alpha4
     TERM: dumb
 
-    # Git commit message
-    GIT_COMMIT_DESC: $(git log --format=oneline -n 1 $CIRCLE_SHA1)
-
 version: 2
 jobs:
     # @todo: common initialization: 'composer install' for the site-under-test

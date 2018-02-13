@@ -16,6 +16,9 @@ if [ "$CIRCLE_BRANCH" != "master" ]; then
       echo "Existing multidev $CIRCLE_BRANCH-$TERMINUS_SITE will be updated."
   fi
 
+  # Get the latest commit msg
+  GIT_COMMIT_MSG="$(git log -1 --pretty=%B)"
+
   # Remove any existing build
   rm -rf /tmp/pantheon
 
@@ -39,7 +42,7 @@ if [ "$CIRCLE_BRANCH" != "master" ]; then
 
   # Git add and commit
   git add -A
-  git commit -m "Circle CI Build: $CIRCLE_BUILD_URL"
+  git commit -m "Circle CI Build: $CIRCLE_BUILD_URL" -m "- $GIT_COMMIT_MSG"
 
   # Push code to multidev
   git push -f origin $CIRCLE_BRANCH
@@ -58,6 +61,9 @@ if [ "$CIRCLE_BRANCH" == "master" ]; then
   echo "$TERMINUS_SITE.dev will be updated."
   # Log in w/ terminus
   terminus -n auth:login --machine-token="$TERMINUS_TOKEN"
+
+  # Get the latest commit msg
+  GIT_COMMIT_MSG="$(git log -1 --pretty=%B)"
 
   # Remove any existing build
   rm -rf /tmp/pantheon
@@ -82,7 +88,7 @@ if [ "$CIRCLE_BRANCH" == "master" ]; then
 
   # Git add and commit
   git add -A
-  git commit -m "Circle CI Build: $CIRCLE_BUILD_URL"
+  git commit -m "Circle CI Build: $CIRCLE_BUILD_URL" -m "- $GIT_COMMIT_MSG"
 
   # Push code to dev
   git push -f origin master
