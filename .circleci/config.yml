@@ -37,7 +37,7 @@ defaults: &defaults
     TERM: dumb
 
     # Git commit message
-    GIT_COMMIT_DESC: $(git log --format=oneline -n 1 $CIRCLE_SHA1)
+    GIT_COMMIT_DESC: '$(git log --format=oneline -n 1 $CIRCLE_SHA1)'
 
 version: 2
 jobs:
@@ -52,8 +52,6 @@ jobs:
                 command: |
                   echo "Running composer build-assets to generate the full repo..."
                   composer -n build-assets
-                  echo "commit msg!"
-                  echo "$GIT_COMMIT_DESC"
 
             - restore_cache:
                 keys:
