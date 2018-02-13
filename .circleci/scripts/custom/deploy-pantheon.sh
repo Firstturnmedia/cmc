@@ -23,7 +23,8 @@ if [ "$CIRCLE_BRANCH" != "master" ]; then
   #git log --format=oneline -n 1 $CIRCLE_SHA1
 
   # Set the latest git commit message to a variable
-  GIT_COMMIT_MSG="$(git log --format=oneline -n 1 $CIRCLE_SHA1)"
+  #GIT_COMMIT_MSG="$(git log --format=oneline -n 1 $CIRCLE_SHA1)"
+  GIT_COMMIT_MSG="$(git log -1 --pretty=%B)"
 
   # Show the latest commit msg
   echo "Show the latest commit message"
@@ -53,7 +54,7 @@ if [ "$CIRCLE_BRANCH" != "master" ]; then
   # Git add and commit
   git add -A
   #git commit -m "Circle CI Build: ${CIRCLE_BUILD_URL}"
-  git commit -m "Circle CI Build: $CIRCLE_BUILD_URL" -m "$GIT_COMMIT_MSG"
+  git commit -m "Circle CI Build: $CIRCLE_BUILD_URL" -m "- $GIT_COMMIT_MSG"
 
   # Push code to multidev
   git push -f origin $CIRCLE_BRANCH
