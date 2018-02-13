@@ -15,6 +15,12 @@ if [ "$CIRCLE_BRANCH" != "master" ]; then
     else
       echo "Existing multidev $CIRCLE_BRANCH-$TERMINUS_SITE will be updated."
   fi
+  # Show the present working directory
+  pwd
+
+  # Show the latest commit msg
+  echo "Show the latest commit message"
+  git log --format=oneline -n 1 $CIRCLE_SHA1
 
   # Remove any existing build
   rm -rf /tmp/pantheon
