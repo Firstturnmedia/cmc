@@ -48,6 +48,13 @@ jobs:
             - checkout
 
             - run:
+                name: Grab github git commit message
+                command: |
+                  echo "Running composer build-assets to generate the full repo..."
+                  echo "export GIT_COMMIT_MESSAGE=\"$(git log --format=oneline -n 1 $CIRCLE_SHA1)\"" >> ~/.bashrc
+                  echo $GIT_COMMIT_MESSAGE
+
+            - run:
                 name: Generate Full Repo
                 command: |
                   echo "Running composer build-assets to generate the full repo..."
