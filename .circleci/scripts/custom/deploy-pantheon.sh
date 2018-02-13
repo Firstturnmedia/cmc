@@ -23,7 +23,7 @@ if [ "$CIRCLE_BRANCH" != "master" ]; then
   #git log --format=oneline -n 1 $CIRCLE_SHA1
 
   # Set the latest git commit message to a variable
-  GIT_COMMIT_MSG: "$(git log --format=oneline -n 1 $CIRCLE_SHA1)"
+  GIT_COMMIT_MSG="$(git log --format=oneline -n 1 $CIRCLE_SHA1)"
 
   # Show the latest commit msg
   echo "Show the latest commit message"
