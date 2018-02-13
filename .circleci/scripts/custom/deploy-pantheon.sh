@@ -19,8 +19,15 @@ if [ "$CIRCLE_BRANCH" != "master" ]; then
   pwd
 
   # Show the latest commit msg
+  #echo "Show the latest commit message"
+  #git log --format=oneline -n 1 $CIRCLE_SHA1
+
+  # Set the latest git commit message to a variable
+  $GIT_COMMIT_MSG: "$(git log --format=oneline -n 1 $CIRCLE_SHA1)"
+
+  # Show the latest commit msg
   echo "Show the latest commit message"
-  git log --format=oneline -n 1 $CIRCLE_SHA1
+  echo $GIT_COMMIT_MSG
 
   # Remove any existing build
   rm -rf /tmp/pantheon
@@ -42,20 +49,6 @@ if [ "$CIRCLE_BRANCH" != "master" ]; then
 
   # Setup git user.email and user.name
   git config user.email "${GIT_EMAIL}" && git config user.name "${CIRCLE_USERNAME}"
-
-  # testing
-  echo ""
-  echo "raw git commit msg":
-  echo ""
-  echo $GIT_COMMIT_DESC
-  echo ""
-  echo "Git commit msg: $GIT_COMMIT_DESC"
-  echo ""
-  echo "3rd option"
-  echo ${GIT_COMMIT_DESC}
-  echo ""
-  echo "3rd option with quotes"
-  echo "${GIT_COMMIT_DESC}"
 
   # Git add and commit
   git add -A
