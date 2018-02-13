@@ -88,15 +88,16 @@ class CmcWebformTaxonomyMapping extends FormBase {
         // $webform_element_option_value can contain spaces, i.e., "Welcome people at front door"
         // This appears to be causing issues?
         foreach ($webform_element['#options'] as $webform_element_option_value => $webform_element_option_text) {
-          // Set default_values to array
-          $default_values = [];
-
           // Replace spaces
           $webform_element_option_value = $this->replaceSpaces($webform_element_option_value);
 
           // Iterate over webform taxonomy mapping and get the tids
           // Build a default values array of term entity objects
           if (isset($cmc_webform_taxonomy_mapping[$webform_element_key][$webform_element_option_value]['tids'])) {
+            // Set default_values to array
+            $default_values = [];
+
+            // Iterate and build the default values array
             foreach ($cmc_webform_taxonomy_mapping[$webform_element_key][$webform_element_option_value]['tids'] as $tid) {
               // Load the term object
               $term_entity = \Drupal\taxonomy\Entity\Term::load($tid);
@@ -114,6 +115,8 @@ class CmcWebformTaxonomyMapping extends FormBase {
           ];
 
           // Taxonomy entity autocomplete form element
+          // @see https://www.drupal.org/node/2418529
+          // 
           $form['webform_container'][$webform_element_key][$webform_element_option_value . '_cmc_webform_taxonomy'] = [
             '#type' => 'entity_autocomplete',
             '#target_type' => 'taxonomy_term',
