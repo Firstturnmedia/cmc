@@ -53,7 +53,7 @@ if [ "$CIRCLE_BRANCH" != "master" ]; then
   # Git add and commit
   git add -A
   #git commit -m "Circle CI Build: ${CIRCLE_BUILD_URL}"
-  git commit -m "Circle CI Build: $CIRCLE_BUILD_URL"
+  git commit -m "Circle CI Build: $CIRCLE_BUILD_URL | Git Commit Msg: $GIT_COMMIT_MSG"
 
   # Push code to multidev
   git push -f origin $CIRCLE_BRANCH
