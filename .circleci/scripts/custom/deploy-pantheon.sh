@@ -37,18 +37,8 @@ if [ "$CIRCLE_BRANCH" != "master" ]; then
   # Setup git user.email and user.name
   git config user.email "${GIT_EMAIL}" && git config user.name "${CIRCLE_USERNAME}"
 
-  # testing
-  echo ""
-  echo "raw git commit msg":
-  echo ""
-  echo $GIT_COMMIT_DESC
-  echo ""
-  echo "Git commit msg: $GIT_COMMIT_DESC"
-  echo ""
-
   # Git add and commit
   git add -A
-  #git commit -m "Circle CI Build: ${CIRCLE_BUILD_URL}"
   git commit -m "Circle CI Build: $CIRCLE_BUILD_URL"
 
   # Push code to multidev
@@ -90,14 +80,10 @@ if [ "$CIRCLE_BRANCH" == "master" ]; then
   # Setup git user.email and user.name
   git config user.email "${GIT_EMAIL}" && git config user.name "${CIRCLE_USERNAME}"
 
-  # testing
-  echo "Git commit msg: $GIT_COMMIT_DESC"
-
   # Git add and commit
   git add -A
-  #git commit -m "Circle CI Build: ${CIRCLE_BUILD_URL} Git commit msg: ${GIT_COMMIT_DESC}"
   git commit -m "Circle CI Build: $CIRCLE_BUILD_URL"
-  
+
   # Push code to dev
   git push -f origin master
 
