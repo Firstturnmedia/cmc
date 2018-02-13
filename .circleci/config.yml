@@ -53,8 +53,7 @@ jobs:
                   echo "Running composer build-assets to generate the full repo..."
                   composer -n build-assets
                   echo "commit msg!"
-                  echo GIT_COMMIT_DESC
-                  echo $GIT_COMMIT_DESC
+                  echo "$GIT_COMMIT_DESC"
 
             - restore_cache:
                 keys:
