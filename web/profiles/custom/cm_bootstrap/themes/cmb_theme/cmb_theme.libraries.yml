@@ -1,0 +1,5 @@
+cmb_theme:
+  version: 1.0
+  css:
+    theme:
+      css/app.min.css: {}
