@@ -1,0 +1,23 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the CMC Webform module.
+ */
+
+/**
+ * Remove module configurations.
+ */
+function cmc_webform_uninstall() {
+  //$sugar_config = Drupal::configFactory()->getEditable('webform_sugarcrm.sugarcrm_configuration');
+  //$sugar_config->delete();
+
+  // Load all webforms
+  $webforms = Drupal::entityTypeManager()->getStorage('webform')->loadMultiple();
+
+  // Iterate over each webform and delete any module related config.
+  foreach ($webforms as $webform) {
+    $webform_config = Drupal::configFactory()->getEditable('cmc_webform.taxonomy_mapping.' . $webform->id());
+    $webform_config->delete();
+  }
+}

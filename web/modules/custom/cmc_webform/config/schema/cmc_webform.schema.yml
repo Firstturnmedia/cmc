@@ -1,0 +1,3 @@
+cmc_webform.taxonomy_mapping.*:
+  type: config_object
+  label: 'CMC Webform configuration'
