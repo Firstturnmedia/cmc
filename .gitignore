@@ -31,6 +31,9 @@ web/sites/example.sites.php
 web/update.php
 web/web.config
 
+# Ignore settings local vars
+web/sites/default/settings.local.vars.php
+
 # Add directories containing build assets below.
 # Keep all additions above the "cut" line.
 
@@ -57,7 +60,7 @@ web/sites/default/files
 # Place local settings in settings.local.php
 web/sites/*/settings.local.php
 web/sites/*/services*.yml
-!web/sites/*/services.pantheon.*.yml 
+!web/sites/*/services.pantheon.*.yml
 
 # Ignore SimpleTest multi-site environment.
 web/sites/simpletest
