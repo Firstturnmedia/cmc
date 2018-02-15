@@ -94,7 +94,8 @@ if [ "$CIRCLE_BRANCH" == "master" ]; then
   git push -f origin master
 
   # Run update.php
-  terminus -n drush "$TERMINUS_SITE.$CIRCLE_BRANCH" -- updatedb -y
+  # @todo need to get pantheon env here, somehow?
+  terminus -n drush $TERMINUS_SITE.dev -- updatedb -y
 
   # Run config-import -y
   # @todo need to make this not hardcoded as dev
