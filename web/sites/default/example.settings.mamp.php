@@ -1,5 +1,11 @@
 <?php
 
+// Include settings.local.vars.php
+$settings_local_vars = __DIR__ . "/settings.local.vars.php";
+if (file_exists($settings_local_vars)) {
+  include $settings_local_vars;
+}
+
 /**
  * @file
  * Local development override configuration feature.
@@ -116,7 +122,7 @@ $settings['skip_permissions_hardening'] = TRUE;
 
 // MAMP DB
 $databases['default']['default'] = array (
-  'database' => 'cmc',
+  'database' => $database,
   'username' => 'root',
   'password' => 'root',
   'prefix' => '',
