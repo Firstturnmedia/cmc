@@ -15,6 +15,7 @@ module:
   dblog: 0
   dynamic_page_cache: 0
   editor: 0
+  entity: 0
   field: 0
   field_ui: 0
   file: 0
@@ -30,6 +31,8 @@ module:
   path: 0
   quickedit: 0
   rdf: 0
+  redhen: 0
+  redhen_contact: 0
   search: 0
   shortcut: 0
   system: 0
@@ -39,6 +42,7 @@ module:
   tour: 0
   update: 0
   user: 0
+  views_bulk_operations: 0
   views_ui: 0
   webform: 0
   webform_ui: 0

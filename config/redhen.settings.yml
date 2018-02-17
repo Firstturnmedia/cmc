@@ -1,0 +1,7 @@
+dependencies:
+  enforced:
+    module:
+      - redhen
+redhen_admin_path: true
+_core:
+  default_config_hash: W6JoZaNciRVmOkVU1Fj7XeWkUEuTRy2gf1VyKo6fSOY
