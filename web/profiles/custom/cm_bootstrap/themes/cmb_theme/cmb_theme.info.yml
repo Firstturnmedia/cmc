@@ -4,5 +4,5 @@ description: CM Bootstrap theme description
 package: CM Bootstrap
 core: 8.x
 base theme: false
-libraries:
-  - cmb_theme/cmb_theme
+#libraries:
+#  - cmb_theme/cmb_theme
