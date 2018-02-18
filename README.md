@@ -39,3 +39,7 @@ In these examples, the composer version 3.0.0-alpha26 maps to the drupal.org ver
 If you specify a branch, such as 1.x you must add -dev to the end of the version.
 
 **Composer is only responsible for maintaining the code base**.
+
+## Local Behat Testing
+Run behat tests locally
+    cd tests && ../vendor/bin/behat
