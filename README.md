@@ -42,4 +42,4 @@ If you specify a branch, such as 1.x you must add -dev to the end of the version
 
 ## Local Behat Testing
 Run behat tests locally
-    cd tests && ../vendor/bin/behat
+    $ cd tests && ../vendor/bin/behat
