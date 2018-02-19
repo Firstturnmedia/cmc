@@ -61,6 +61,7 @@ If you specify a branch, such as 1.x you must add -dev to the end of the version
 
     $ composer update drupal/config_ignore
 
+
 ## Local Behat Testing
 
 #### Start Selenium and Chromedriver
