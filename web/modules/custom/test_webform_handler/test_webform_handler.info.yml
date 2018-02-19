@@ -1,8 +1,0 @@
-name: Test Webform Handler
-type: module
-description: Test Webform Handler
-core: 8.x
-package: CMC
-dependencies:
-  - webform
-  - webform_ui
