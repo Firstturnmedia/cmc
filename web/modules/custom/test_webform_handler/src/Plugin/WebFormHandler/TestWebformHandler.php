@@ -18,7 +18,7 @@ use Drupal\Core\Queue\QueueFactory;
  * Send a Webform submission to a queue.
  *
  * @WebformHandler(
- *   id = "test_webform_handler_test",
+ *   id = "test",
  *   label = @Translation("Test Webform Handler Test"),
  *   category = @Translation("Test Webform Handler"),
  *   description = @Translation("Test Webform Handler"),
