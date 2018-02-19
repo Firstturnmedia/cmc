@@ -55,7 +55,8 @@ If you specify a branch, such as 1.x you must add -dev to the end of the version
       "2857247 - Support for export filtering via Drush": "https://www.drupal.org/files/issues/support_for_export-2857247-12.patch"
     }
   }
-}```
+}
+```
 
 #### Run Composer Update
 
