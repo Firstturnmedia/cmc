@@ -10,6 +10,8 @@ module:
   cmc_webform: 0
   color: 0
   config: 0
+  config_filter: 0
+  config_ignore: 0
   contextual: 0
   datetime: 0
   dblog: 0

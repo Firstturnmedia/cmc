@@ -22,6 +22,7 @@ use Drupal\redhen_contact\Entity\Contact;
  * @WebformHandler(
  *   id = "add_contact",
  *   label = @Translation("Add Contact"),
+ *   category = @Translation("CMC Webform"),
  *   description = @Translation("Creates a Redhen contact from webform submission"),
  *   cardinality = \Drupal\webform\Plugin\WebformHandlerInterface::CARDINALITY_UNLIMITED,
  *   results = \Drupal\webform\Plugin\WebformHandlerInterface::RESULTS_PROCESSED,
