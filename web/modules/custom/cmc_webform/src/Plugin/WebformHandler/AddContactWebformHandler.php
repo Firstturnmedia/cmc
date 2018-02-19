@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\cmc_webform\Plugin\WebFormHandler;
+namespace Drupal\cmc_webform\Plugin\WebformHandler;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
