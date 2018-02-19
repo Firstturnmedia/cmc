@@ -1,8 +1,5 @@
 <?php
 
-# Disable APC class loader
-$settings['class_loader_auto_detect'] = FALSE;
-
 /**
  * Load services definition file.
  */
