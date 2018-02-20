@@ -1,0 +1,20 @@
+uuid: 840cb452-6fe0-4f36-9b89-77fbca5ec0e9
+langcode: en
+status: true
+dependencies:
+  module:
+    - redhen_contact
+    - taxonomy
+id: redhen_contact.field_tags
+field_name: field_tags
+entity_type: redhen_contact
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

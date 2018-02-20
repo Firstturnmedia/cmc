@@ -1,0 +1,8 @@
+# Local behat configuration
+default:
+  extensions:
+    Behat\MinkExtension:
+      base_url: LOCAL_URL
+    Drupal\DrupalExtension:
+      drupal:
+        drupal_root: FULL_PATH_TO_DOCROOT

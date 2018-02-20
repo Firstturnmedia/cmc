@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\cmc_webform\Plugin\WebFormHandler;
+namespace Drupal\cmc_webform\Plugin\WebformHandler;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -20,6 +20,7 @@ use Drupal\Core\Queue\QueueFactory;
  * @WebformHandler(
  *   id = "webform_contact_queue",
  *   label = @Translation("Webform Contact Queue"),
+ *   category = @Translation("CMC Webform"),
  *   description = @Translation("Sends contact data from webform submission to a queue"),
  *   cardinality = \Drupal\webform\Plugin\WebformHandlerInterface::CARDINALITY_UNLIMITED,
  *   results = \Drupal\webform\Plugin\WebformHandlerInterface::RESULTS_PROCESSED,

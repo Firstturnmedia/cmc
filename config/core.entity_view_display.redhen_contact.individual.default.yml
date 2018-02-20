@@ -1,0 +1,39 @@
+uuid: d8f03162-7eac-467f-b04c-2b7ba84b5cc8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.redhen_contact.individual.field_tags
+    - redhen_contact.redhen_contact_type.individual
+id: redhen_contact.individual.default
+targetEntityType: redhen_contact
+bundle: individual
+mode: default
+content:
+  email:
+    label: inline
+    type: email_mailto
+    weight: -4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tags:
+    weight: 1
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  uid:
+    label: inline
+    type: entity_reference_label
+    settings:
+      link: true
+    weight: 0
+    region: content
+    third_party_settings: {  }
+hidden:
+  first_name: true
+  last_name: true
+  middle_name: true

@@ -39,3 +39,36 @@ In these examples, the composer version 3.0.0-alpha26 maps to the drupal.org ver
 If you specify a branch, such as 1.x you must add -dev to the end of the version.
 
 **Composer is only responsible for maintaining the code base**.
+
+## Applying patches with composer
+
+*In the below example, we are patching the config_ignore module.*
+
+#### Add patch to composer.json
+
+```javascript
+"extra": {
+  "patches": {
+    // Module to patch
+    "drupal/config_ignore": {
+      // Description: Link to patch on drupal.org
+      "2857247 - Support for export filtering via Drush": "https://www.drupal.org/files/issues/support_for_export-2857247-12.patch"
+    }
+  }
+}
+```
+
+#### Run Composer Update
+
+    $ composer update drupal/config_ignore
+
+
+## Local Behat Testing
+
+#### Start Selenium and Chromedriver
+
+    $ start-sel
+
+#### Run behat tests locally
+
+    $ cd tests && ../vendor/bin/behat

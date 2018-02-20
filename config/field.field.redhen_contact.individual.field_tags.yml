@@ -1,0 +1,31 @@
+uuid: 79559fbd-b250-4213-a019-45aac05c6bc4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.redhen_contact.field_tags
+    - redhen_contact.redhen_contact_type.individual
+    - taxonomy.vocabulary.interests
+    - taxonomy.vocabulary.volunteerism_engagement
+id: redhen_contact.individual.field_tags
+field_name: field_tags
+entity_type: redhen_contact
+bundle: individual
+label: Tags
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      interests: interests
+      volunteerism_engagement: volunteerism_engagement
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: interests
+field_type: entity_reference

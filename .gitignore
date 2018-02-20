@@ -34,6 +34,9 @@ web/web.config
 # Ignore settings local vars
 web/sites/default/settings.local.vars.php
 
+# Ignore local behat
+tests/behat.local.yml
+
 # Add directories containing build assets below.
 # Keep all additions above the "cut" line.
 
