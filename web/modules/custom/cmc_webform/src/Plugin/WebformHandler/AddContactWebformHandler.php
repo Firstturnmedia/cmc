@@ -71,6 +71,102 @@ class AddContactWebformHandler extends WebformHandlerBase {
   /**
    * {@inheritdoc}
    */
+  public function defaultConfiguration() {
+    return [
+      'email' => '',
+      'first_name' => '',
+      'last_name' => '',
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
+    $form['field_mapping'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Contact Field Mapping'),
+    ];
+
+    // Get webform elements as form options
+    $elements = $this->getWebform()->getElementsInitializedFlattenedAndHasValue();
+
+    foreach ($elements as $element_key => $element) {
+      $element_options[$element_key] = $element['#title'];
+    }
+
+    $form['email'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Email'),
+      '#description' => $this->t('Select the webform element to map to Contact email'),
+      '#options' => $element_options,
+      '#required' => TRUE,
+      '#default_value' => $this->configuration['email'],
+      '#empty_value' => '',
+      '#empty_option' => '- Select Contact Field -',
+    ];
+
+    $form['first_name'] = [
+      '#type' => 'select',
+      '#title' => $this->t('First Name'),
+      '#description' => $this->t('Select the webform element to map to Contact first name'),
+      '#options' => $element_options,
+      '#required' => TRUE,
+      '#default_value' => $this->configuration['first_name'],
+      '#empty_value' => '',
+      '#empty_option' => '- Select Contact Field -',
+    ];
+
+    $form['last_name'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Last Name'),
+      '#description' => $this->t('Select the webform element to map to Contact last name'),
+      '#options' => $element_options,
+      '#required' => TRUE,
+      '#default_value' => $this->configuration['last_name'],
+      '#empty_value' => '',
+      '#empty_option' => '- Select Contact Field -',
+    ];
+
+    return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateConfigurationForm(array &$form, FormStateInterface $form_state) {
+    if ($form_state->hasAnyErrors()) {
+      return;
+    }
+
+    // Validate data element keys.
+    $elements = $this->getWebform()->getElementsInitializedFlattenedAndHasValue();
+    $data = Yaml::decode($form_state->getValue('data')) ?: [];
+
+    foreach ($data as $key => $value) {
+      if (!isset($elements[$key])) {
+        $form_state->setErrorByName('data', $this->t('%key is not valid element key.', ['%key' => $key]));
+      }
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
+    parent::submitConfigurationForm($form, $form_state);
+    $values = $form_state->getValues();
+
+    foreach ($this->configuration as $name => $value) {
+      if (isset($values[$name])) {
+        $this->configuration[$name] = $values[$name];
+      }
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getTids(array $webform_data) {
     // @todo fix this. This code seems insane, but somehow works?
 
@@ -140,9 +236,9 @@ class AddContactWebformHandler extends WebformHandlerBase {
       // Create contact
       $contact = Contact::create([
         'type' => $contact_type,
-        'first_name' => $webform_data['values']['first_name'],
-        'last_name' => $webform_data['values']['last_name'],
-        'email' => $webform_data['values']['email'],
+        'first_name' => $webform_data['values'][$this->configuration['first_name']],
+        'last_name' => $webform_data['values'][$this->configuration['last_name']],
+        'email' => $webform_data['values'][$this->configuration['email']],
       ]);
 
       // Add tags fields
