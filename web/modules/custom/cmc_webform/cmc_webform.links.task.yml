@@ -1,5 +1,10 @@
-cmc_webform.edit_configuration:
+cmc_webform.taxonomy_mapping:
   title: 'Taxonomy Mapping'
   route_name: cmc_webform.taxonomy_mapping
   parent_id: entity.webform.edit_form
   weight: 100
+cmc_webform.taxonomy_config:
+  title: 'Taxonomy Config'
+  route_name: cmc_webform.taxonomy_config
+  parent_id: entity.webform.edit_form
+  weight: 101
