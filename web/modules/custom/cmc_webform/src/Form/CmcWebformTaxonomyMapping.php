@@ -216,7 +216,10 @@ class CmcWebformTaxonomyMapping extends FormBase {
    */
   private function getTargetBundles($webform_id) {
     // Hard coded for now, make this dynamic, pulling from config settings per webform
-    $target_bundles = ['interests', 'volunteerism_engagement'];
+    //$target_bundles = ['interests', 'volunteerism_engagement'];
+
+    $taxonomy_config = \Drupal::config('cmc_webform.taxonomy_config.' . $webform_id);
+    $target_bundles = $taxonomy_config->get();
 
     return $target_bundles;
   }
