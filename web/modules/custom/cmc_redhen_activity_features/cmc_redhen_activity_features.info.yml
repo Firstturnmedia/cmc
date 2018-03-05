@@ -1,0 +1,11 @@
+name: 'CMC Redhen Activity Features'
+description: 'CMC Redhen Activity Features'
+type: module
+core: 8.x
+dependencies:
+  - cmc_redhen_activity
+  - field
+  - redhen_contact
+  - text
+  - user
+  - views

@@ -1,0 +1,49 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - cmc_redhen_activity.cmc_redhen_activity_type.redhen_note
+    - field.field.cmc_redhen_activity.redhen_note.field_redhen_contact
+    - field.field.cmc_redhen_activity.redhen_note.field_redhen_note
+  module:
+    - text
+id: cmc_redhen_activity.redhen_note.default
+targetEntityType: cmc_redhen_activity
+bundle: redhen_note
+mode: default
+content:
+  field_redhen_contact:
+    weight: 2
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_redhen_note:
+    weight: 1
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  user_id:
+    type: entity_reference_autocomplete
+    weight: 3
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    region: content
+    third_party_settings: {  }
+hidden: {  }

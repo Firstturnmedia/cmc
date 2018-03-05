@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - cmc_redhen_activity.cmc_redhen_activity_type.redhen_note
+    - field.storage.cmc_redhen_activity.field_redhen_contact
+    - redhen_contact.redhen_contact_type.individual
+id: cmc_redhen_activity.redhen_note.field_redhen_contact
+field_name: field_redhen_contact
+entity_type: cmc_redhen_activity
+bundle: redhen_note
+label: 'Redhen Contact'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:redhen_contact'
+  handler_settings:
+    target_bundles:
+      individual: individual
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

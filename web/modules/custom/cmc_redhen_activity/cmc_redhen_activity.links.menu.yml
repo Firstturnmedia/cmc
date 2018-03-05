@@ -1,0 +1,16 @@
+# List of "Activity" entities
+entity.cmc_redhen_activity.collection:
+  title: 'Activity'
+  route_name: entity.cmc_redhen_activity.collection
+  description: 'List Activity entities'
+  parent: redhen.dashboard
+  weight: 100
+
+
+# Activity type config
+entity.cmc_redhen_activity_type.collection:
+  title: 'Activity types'
+  route_name: entity.cmc_redhen_activity_type.collection
+  description: 'List Activity types'
+  parent: redhen.structure
+  weight: 99

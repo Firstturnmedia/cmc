@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - cmc_redhen_activity
+    - redhen_contact
+id: cmc_redhen_activity.field_redhen_contact
+field_name: field_redhen_contact
+entity_type: cmc_redhen_activity
+type: entity_reference
+settings:
+  target_type: redhen_contact
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,18 @@
+entity.cmc_redhen_activity.add_form:
+  route_name: entity.cmc_redhen_activity.add_page
+  title: 'Add Activity'
+  appears_on:
+    - entity.cmc_redhen_activity.collection
+entity.cmc_redhen_activity_type.add_form:
+  route_name: entity.cmc_redhen_activity_type.add_form
+  title: 'Add Activity type'
+  appears_on:
+    - entity.cmc_redhen_activity_type.collection
+
+#cmc_redhen_activity.contact_activity:
+  #route_name: view.cmc_redhen_activity.page_2
+#  route_name: view.cmc_redhen_activity.page_1
+  #deriver: 'Drupal\cmc_redhen_activity\Plugin\Derivative\DynamicLocalTasks'
+#  title: 'Activity action!'
+#  appears_on:
+#    - entity.redhen_contact.canonical

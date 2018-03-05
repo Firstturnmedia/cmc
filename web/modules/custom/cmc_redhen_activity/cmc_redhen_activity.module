@@ -1,0 +1,85 @@
+<?php
+
+/**
+ * @file
+ * Contains cmc_redhen_activity.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\cmc_redhen_activity\Entity\Activity;
+
+/**
+ * Implements hook_help().
+ */
+function cmc_redhen_activity_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the cmc_redhen_activity module.
+    case 'help.page.cmc_redhen_activity':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('CMC Redhen Activity') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function cmc_redhen_activity_theme() {
+  $theme = [];
+  $theme['cmc_redhen_activity'] = [
+    'render element' => 'elements',
+    'file' => 'cmc_redhen_activity.page.inc',
+    'template' => 'cmc_redhen_activity',
+  ];
+  $theme['cmc_redhen_activity_content_add_list'] = [
+    'render element' => 'content',
+    'variables' => ['content' => NULL],
+    'file' => 'cmc_redhen_activity.page.inc',
+  ];
+  return $theme;
+}
+
+/**
+* Implements hook_theme_suggestions_HOOK().
+*/
+function cmc_redhen_activity_theme_suggestions_cmc_redhen_activity(array $variables) {
+  $suggestions = [];
+  $entity = $variables['elements']['#cmc_redhen_activity'];
+  $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
+
+  $suggestions[] = 'cmc_redhen_activity__' . $sanitized_view_mode;
+  $suggestions[] = 'cmc_redhen_activity__' . $entity->bundle();
+  $suggestions[] = 'cmc_redhen_activity__' . $entity->bundle() . '__' . $sanitized_view_mode;
+  $suggestions[] = 'cmc_redhen_activity__' . $entity->id();
+  $suggestions[] = 'cmc_redhen_activity__' . $entity->id() . '__' . $sanitized_view_mode;
+  return $suggestions;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert(Drupal\Core\Entity\EntityInterface $entity)
+ */
+function cmc_redhen_activity_redhen_contact_insert(Drupal\Core\Entity\EntityInterface $entity) {
+  $debug = $entity;
+
+  $argument_values = [
+    'name' => $entity->email->value,
+    'op' => 'create',
+  ];
+
+  // Create activity entity
+  $activity = Activity::create([
+    'type' => 'redhen_contact',
+    'name' => 'Created contact for this user, yo!',
+    'arguments' => $argument_values
+  ]);
+
+  // Populate contact entity reference field
+  // Maybe find a better way to do this?
+  $activity->set('field_redhen_contact', $entity->id->value);
+
+  // Save actvity
+  $activity->save();
+}
