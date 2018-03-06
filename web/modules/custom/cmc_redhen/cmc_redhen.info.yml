@@ -1,0 +1,7 @@
+name: CMC Redhen
+type: module
+description: CMC Redhen
+core: 8.x
+package: CMC
+dependencies:
+  - redhen

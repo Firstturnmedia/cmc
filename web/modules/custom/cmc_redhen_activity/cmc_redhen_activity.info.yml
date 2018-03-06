@@ -1,0 +1,8 @@
+name: CMC Redhen Activity
+type: module
+description: CMC Redhen Activity
+core: 8.x
+package: CMC
+dependencies:
+  - redhen
+  - redhen_contact

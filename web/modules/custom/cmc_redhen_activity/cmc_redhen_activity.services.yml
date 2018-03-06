@@ -1,0 +1,5 @@
+services:
+  cmc_redhen_activity.route_subscriber:
+    class: Drupal\cmc_redhen_activity\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }

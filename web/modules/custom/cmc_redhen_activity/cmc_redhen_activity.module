@@ -1,0 +1,110 @@
+<?php
+
+/**
+ * @file
+ * Contains cmc_redhen_activity.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\cmc_redhen_activity\Entity\Activity;
+
+/**
+ * Implements hook_help().
+ */
+function cmc_redhen_activity_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the cmc_redhen_activity module.
+    case 'help.page.cmc_redhen_activity':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('CMC Redhen Activity') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function cmc_redhen_activity_theme() {
+  $theme = [];
+  $theme['cmc_redhen_activity'] = [
+    'render element' => 'elements',
+    'file' => 'cmc_redhen_activity.page.inc',
+    'template' => 'cmc_redhen_activity',
+  ];
+  $theme['cmc_redhen_activity_content_add_list'] = [
+    'render element' => 'content',
+    'variables' => ['content' => NULL],
+    'file' => 'cmc_redhen_activity.page.inc',
+  ];
+  return $theme;
+}
+
+/**
+* Implements hook_theme_suggestions_HOOK().
+*/
+function cmc_redhen_activity_theme_suggestions_cmc_redhen_activity(array $variables) {
+  $suggestions = [];
+  $entity = $variables['elements']['#cmc_redhen_activity'];
+  $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
+
+  $suggestions[] = 'cmc_redhen_activity__' . $sanitized_view_mode;
+  $suggestions[] = 'cmc_redhen_activity__' . $entity->bundle();
+  $suggestions[] = 'cmc_redhen_activity__' . $entity->bundle() . '__' . $sanitized_view_mode;
+  $suggestions[] = 'cmc_redhen_activity__' . $entity->id();
+  $suggestions[] = 'cmc_redhen_activity__' . $entity->id() . '__' . $sanitized_view_mode;
+  return $suggestions;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert(Drupal\Core\Entity\EntityInterface $entity)
+ */
+function cmc_redhen_activity_redhen_contact_insert(Drupal\Core\Entity\EntityInterface $entity) {
+  cmc_redhen_activity_message_save($entity, $type = 'redhen_contact', $op = 'created');
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update(Drupal\Core\Entity\EntityInterface $entity)
+ */
+function cmc_redhen_activity_redhen_contact_update(Drupal\Core\Entity\EntityInterface $entity) {
+  cmc_redhen_activity_message_save($entity, $type = 'redhen_contact', $op = 'updated');
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete(Drupal\Core\Entity\EntityInterface $entity)
+ */
+function cmc_redhen_activity_redhen_contact_delete(Drupal\Core\Entity\EntityInterface $entity) {
+  cmc_redhen_activity_message_save($entity, $type = 'redhen_contact', $op = 'deleted');
+}
+
+/**
+ * Save an activity message.
+ *
+ * @param $entity
+ * @param $type
+ * @param $op
+ */
+function cmc_redhen_activity_message_save($entity, $type, $op) {
+  switch ($type) {
+
+  }
+
+  // Prep argument values
+  $argument_values = [
+    'name' => $entity->email->value,
+    'op' => $op,
+    'type' => $type,
+  ];
+
+  // Create activity entity
+  $activity = Activity::create([
+    'type' => $type,
+    'contact_id' => $entity->id->value,
+    'arguments' => $argument_values
+  ]);
+
+  // Save actvity
+  $activity->save();
+}
