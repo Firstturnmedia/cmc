@@ -1,0 +1,8 @@
+uuid: 1de6d0df-27c7-4f58-8cb1-139f629018da
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: OIyZ1_ZhAa-gXKU1lZbS4icaA9JQ31TJrG9_wFG_Sfg
+id: redhen_contact
+label: 'Redhen Contact'

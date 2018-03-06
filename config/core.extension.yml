@@ -6,6 +6,8 @@ module:
   block_content: 0
   breakpoint: 0
   ckeditor: 0
+  cmc_redhen: 0
+  cmc_redhen_activity: 0
   cmc_test_content: 0
   cmc_webform: 0
   color: 0
