@@ -13,27 +13,7 @@ use Drupal\user\EntityOwnerInterface;
  */
 interface ActivityInterface extends  ContentEntityInterface, EntityChangedInterface, EntityOwnerInterface {
 
-  // Add get/set methods for your configuration properties here.
-
-  /**
-   * Gets the Activity name.
-   *
-   * @return string
-   *   Name of the Activity.
-   */
-  public function getName();
-
-  /**
-   * Sets the Activity name.
-   *
-   * @param string $name
-   *   The Activity name.
-   *
-   * @return \Drupal\cmc_redhen_activity\Entity\ActivityInterface
-   *   The called Activity entity.
-   */
-  public function setName($name);
-
+  // Add get/set methods for your configuration properties here
   /**
    * Gets the Activity creation timestamp.
    *
@@ -103,4 +83,13 @@ interface ActivityInterface extends  ContentEntityInterface, EntityChangedInterf
    */
   public function setArguments(array $values);
 
+  /**
+   * {@inheritdoc}
+   */
+  public function setContactId($contact_id);
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getContactId();
 }

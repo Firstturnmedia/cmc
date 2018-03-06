@@ -26,7 +26,7 @@ cmc_redhen_activity.contact_view:
 
 cmc_redhen_activity.contact_activity:
   title: 'Activity'
-  route_name: view.cmc_redhen_activity.contact_activity
+  route_name: view.redhen_activity.contact_activity
   parent_id: entity.redhen_contact.canonical
   class: '\Drupal\cmc_redhen_activity\Plugin\Menu\ContactActivityTab'
   weight: 10

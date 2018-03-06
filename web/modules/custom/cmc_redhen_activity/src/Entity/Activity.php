@@ -39,7 +39,6 @@ use Drupal\user\UserInterface;
  *   entity_keys = {
  *     "id" = "id",
  *     "bundle" = "type",
- *     "label" = "name",
  *     "uuid" = "uuid",
  *     "uid" = "user_id",
  *     "langcode" = "langcode",
@@ -69,21 +68,6 @@ class Activity extends ContentEntityBase implements ActivityInterface {
     $values += [
       'user_id' => \Drupal::currentUser()->id(),
     ];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getName() {
-    return $this->get('name')->value;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setName($name) {
-    $this->set('name', $name);
-    return $this;
   }
 
   /**
@@ -165,6 +149,22 @@ class Activity extends ContentEntityBase implements ActivityInterface {
     return $this;
   }
 
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getContactId() {
+    return $this->get('contact_id');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setContactId($contact_id) {
+    $this->set('contact_id', $contact_id);
+    return $this;
+  }
+
   /**
    * {@inheritdoc}
    */
@@ -196,26 +196,6 @@ class Activity extends ContentEntityBase implements ActivityInterface {
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
-    $fields['name'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Name'))
-      ->setDescription(t('The name of the Activity entity.'))
-      ->setSettings([
-        'max_length' => 50,
-        'text_processing' => 0,
-      ])
-      ->setDefaultValue('')
-      ->setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'string',
-        'weight' => -4,
-      ])
-      ->setDisplayOptions('form', [
-        'type' => 'string_textfield',
-        'weight' => -4,
-      ])
-      ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayConfigurable('view', TRUE);
-
     $fields['status'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Publishing status'))
       ->setDescription(t('A boolean indicating whether the Activity is published.'))
@@ -229,13 +209,13 @@ class Activity extends ContentEntityBase implements ActivityInterface {
       ->setLabel(t('Changed'))
       ->setDescription(t('The time that the entity was last edited.'));
 
-    // Add arguments base field/property
+    // Add arguments base field (property)
     $fields['arguments'] = BaseFieldDefinition::create('map')
       ->setLabel(t('Arguments'))
       ->setDescription(t('Holds the arguments of the message in serialise format.'));
 
     // Add contact id base field (property)
-    /*$fields['contact_id'] = BaseFieldDefinition::create('entity_reference')
+    $fields['contact_id'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Redhen Contact'))
       ->setDescription(t('Redhen Contact referenced by this activity.'))
       ->setRevisionable(TRUE)
@@ -244,6 +224,7 @@ class Activity extends ContentEntityBase implements ActivityInterface {
       ->setTranslatable(TRUE)
       ->setDisplayOptions('view', [
         'label' => 'hidden',
+        // @todo this might be wrong?
         'type' => 'redhen_contact',
         'weight' => 0,
       ])
@@ -259,7 +240,7 @@ class Activity extends ContentEntityBase implements ActivityInterface {
       ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
-    */ 
+
     return $fields;
   }
 

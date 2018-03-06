@@ -33,7 +33,6 @@ class ContactActivityTab extends LocalTaskDefault {
    * {@inheritdoc}
    */
   public function getRouteParameters(RouteMatchInterface $route_match) {
-    //return ['contact' => 17];
     return ['contact' => $this->currentContactId()];
   }
 

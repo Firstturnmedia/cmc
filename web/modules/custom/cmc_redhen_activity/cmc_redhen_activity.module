@@ -62,23 +62,48 @@ function cmc_redhen_activity_theme_suggestions_cmc_redhen_activity(array $variab
  * Implements hook_ENTITY_TYPE_insert(Drupal\Core\Entity\EntityInterface $entity)
  */
 function cmc_redhen_activity_redhen_contact_insert(Drupal\Core\Entity\EntityInterface $entity) {
-  $debug = $entity;
+  cmc_redhen_activity_message_save($entity, $type = 'redhen_contact', $op = 'created');
+}
 
+/**
+ * Implements hook_ENTITY_TYPE_update(Drupal\Core\Entity\EntityInterface $entity)
+ */
+function cmc_redhen_activity_redhen_contact_update(Drupal\Core\Entity\EntityInterface $entity) {
+  cmc_redhen_activity_message_save($entity, $type = 'redhen_contact', $op = 'updated');
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete(Drupal\Core\Entity\EntityInterface $entity)
+ */
+function cmc_redhen_activity_redhen_contact_delete(Drupal\Core\Entity\EntityInterface $entity) {
+  cmc_redhen_activity_message_save($entity, $type = 'redhen_contact', $op = 'deleted');
+}
+
+/**
+ * Save an activity message.
+ *
+ * @param $entity
+ * @param $type
+ * @param $op
+ */
+function cmc_redhen_activity_message_save($entity, $type, $op) {
+  switch ($type) {
+
+  }
+
+  // Prep argument values
   $argument_values = [
     'name' => $entity->email->value,
-    'op' => 'create',
+    'op' => $op,
+    'type' => $type,
   ];
 
   // Create activity entity
   $activity = Activity::create([
-    'type' => 'redhen_contact',
-    'name' => 'Created contact for this user, yo!',
+    'type' => $type,
+    'contact_id' => $entity->id->value,
     'arguments' => $argument_values
   ]);
-
-  // Populate contact entity reference field
-  // Maybe find a better way to do this?
-  $activity->set('field_redhen_contact', $entity->id->value);
 
   // Save actvity
   $activity->save();

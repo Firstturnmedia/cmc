@@ -16,7 +16,7 @@ class RouteSubscriber extends RouteSubscriberBase {
   protected function alterRoutes(RouteCollection $collection) {
     // Force admin theme for Redhen activity views
     // Activity per contact view
-    if ($route = $collection->get('view.cmc_redhen_activity.contact_activity')) {
+    if ($route = $collection->get('view.redhen_activity.contact_activity')) {
       $route->setOption('_admin_route', TRUE);
     }
 

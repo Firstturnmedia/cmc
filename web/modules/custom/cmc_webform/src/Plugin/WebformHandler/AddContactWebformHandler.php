@@ -15,6 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Queue\QueueFactory;
 
 use Drupal\redhen_contact\Entity\Contact;
+use Drupal\cmc_redhen_activity\Entity\Activity;
 
 /**
  * Create internal CRM contact on webform submission
@@ -247,6 +248,27 @@ class AddContactWebformHandler extends WebformHandlerBase {
 
       // Save contact
       $contact->save();
+
+      // Create webform activity
+      $moduleHandler = \Drupal::service('module_handler');
+      if ($moduleHandler->moduleExists('cmc_redhen_activity')) {
+        // Prep argument values
+        $argument_values = [
+          'name' => $contact->email->value,
+          'op' => 'submitted',
+          'type' => 'webform'
+        ];
+
+        // Create activity entity
+        $activity = Activity::create([
+          'type' => 'webform',
+          'contact_id' => $contact->id->value,
+          'arguments' => $argument_values
+        ]);
+
+        // Save actvity
+        $activity->save();
+      }
     }
     // @todo fix exception catching
     catch (EntityStorageException $e) {
