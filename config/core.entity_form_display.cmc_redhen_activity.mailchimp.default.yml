@@ -1,0 +1,48 @@
+uuid: 3ea34271-c243-46ef-b07c-c45245396aab
+langcode: en
+status: true
+dependencies:
+  config:
+    - cmc_redhen_activity.cmc_redhen_activity_type.mailchimp
+    - field.field.cmc_redhen_activity.mailchimp.field_mailchimp_campaign_id
+    - field.field.cmc_redhen_activity.mailchimp.field_mailchimp_type
+id: cmc_redhen_activity.mailchimp.default
+targetEntityType: cmc_redhen_activity
+bundle: mailchimp
+mode: default
+content:
+  contact_id:
+    type: entity_reference_autocomplete
+    weight: 5
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    region: content
+    third_party_settings: {  }
+  field_mailchimp_campaign_id:
+    weight: 7
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_mailchimp_type:
+    weight: 8
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  user_id:
+    type: entity_reference_autocomplete
+    weight: 5
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    region: content
+    third_party_settings: {  }
+hidden: {  }

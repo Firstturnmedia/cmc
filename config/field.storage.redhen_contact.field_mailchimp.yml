@@ -1,0 +1,22 @@
+uuid: 5e1926ad-46f5-4cba-81e8-f4ed4b62a5d5
+langcode: en
+status: true
+dependencies:
+  module:
+    - mailchimp_lists
+    - redhen_contact
+id: redhen_contact.field_mailchimp
+field_name: field_mailchimp
+entity_type: redhen_contact
+type: mailchimp_lists_subscription
+settings:
+  mc_list_id: ba1e8e8bdb
+  double_opt_in: 0
+  send_welcome: 0
+module: mailchimp_lists
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

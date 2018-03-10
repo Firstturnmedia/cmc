@@ -1,0 +1,19 @@
+uuid: dffad256-3e09-4239-bf78-d699fb7f1889
+langcode: en
+status: true
+dependencies:
+  config:
+    - cmc_redhen_activity.cmc_redhen_activity_type.mailchimp
+    - field.storage.cmc_redhen_activity.field_mailchimp_campaign_id
+id: cmc_redhen_activity.mailchimp.field_mailchimp_campaign_id
+field_name: field_mailchimp_campaign_id
+entity_type: cmc_redhen_activity
+bundle: mailchimp
+label: 'Mailchimp Campaign ID'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

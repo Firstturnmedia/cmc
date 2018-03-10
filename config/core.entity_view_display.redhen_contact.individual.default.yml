@@ -3,8 +3,11 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.redhen_contact.individual.field_mailchimp
     - field.field.redhen_contact.individual.field_tags
     - redhen_contact.redhen_contact_type.individual
+  module:
+    - mailchimp_lists
 id: redhen_contact.individual.default
 targetEntityType: redhen_contact
 bundle: individual
@@ -17,6 +20,14 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_mailchimp:
+    weight: 2
+    label: above
+    settings:
+      show_interest_groups: false
+    third_party_settings: {  }
+    type: mailchimp_lists_subscribe_default
+    region: content
   field_tags:
     weight: 1
     label: above

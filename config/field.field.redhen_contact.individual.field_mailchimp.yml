@@ -1,0 +1,44 @@
+uuid: be5559c3-7666-48f3-8fda-d12974dfda2d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.redhen_contact.field_mailchimp
+    - redhen_contact.redhen_contact_type.individual
+  module:
+    - mailchimp_lists
+id: redhen_contact.individual.field_mailchimp
+field_name: field_mailchimp
+entity_type: redhen_contact
+bundle: individual
+label: Mailchimp
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value:
+      subscribe: 0
+      interest_groups:
+        2a71d672c9:
+          fea1615ce0: 0
+          0babb9ccfb: 0
+          66d76b4979: 0
+    subscribe: null
+    interest_groups: null
+default_value_callback: ''
+settings:
+  subscribe_checkbox_label: Subscribe
+  show_interest_groups: 1
+  hide_subscribe_checkbox: 0
+  interest_groups_hidden: 0
+  interest_groups_label: 'Mailchimp Groups'
+  merge_fields:
+    EMAIL: email
+    ADDRESS: ''
+    BIRTHDAY: ''
+    FNAME: first_name
+    LNAME: last_name
+    PHONE: ''
+  unsubscribe_on_delete: 1
+field_type: mailchimp_lists_subscription

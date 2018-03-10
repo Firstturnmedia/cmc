@@ -1,0 +1,19 @@
+uuid: 8449291c-78f0-492f-80f5-ae96e7036486
+langcode: en
+status: true
+dependencies:
+  config:
+    - cmc_redhen_activity.cmc_redhen_activity_type.mailchimp
+    - field.storage.cmc_redhen_activity.field_mailchimp_type
+id: cmc_redhen_activity.mailchimp.field_mailchimp_type
+field_name: field_mailchimp_type
+entity_type: cmc_redhen_activity
+bundle: mailchimp
+label: 'Mailchimp Type'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
