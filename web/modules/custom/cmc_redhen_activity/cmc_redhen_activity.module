@@ -62,6 +62,12 @@ function cmc_redhen_activity_theme_suggestions_cmc_redhen_activity(array $variab
  * Implements hook_ENTITY_TYPE_insert(Drupal\Core\Entity\EntityInterface $entity)
  */
 function cmc_redhen_activity_redhen_contact_insert(Drupal\Core\Entity\EntityInterface $entity) {
+  $test = $entity->get('field_mailchimp')->getValue();
+
+  foreach ($test as $item) {
+    $debug = $item;
+  }
+
   cmc_redhen_activity_message_save($entity, $type = 'redhen_contact', $op = 'created');
 }
 
@@ -107,4 +113,14 @@ function cmc_redhen_activity_message_save($entity, $type, $op) {
 
   // Save actvity
   $activity->save();
+}
+
+/**
+ * Implements hook_cmc_webform_contact_added($contact).
+ */
+function cmc_redhen_activity_cmc_webform_contact_added($contact) {
+  // This should really be moved to cmc_webform?
+  $type = 'webform';
+  $op = 'submitted';
+  cmc_redhen_activity_message_save($contact, $type, $op);
 }

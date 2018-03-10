@@ -41,11 +41,23 @@ class CmcRedhenActivityMapFormatter extends FormatterBase {
 
       switch($values['type']) {
         case 'redhen_contact':
-          $string = 'Contact ' . $values['name'] . ' has been ' . $values['op'];
+          $string = 'Contact <i>' . $values['name'] . '</i> has been ' . '<strong>' . $values['op'] . '</strong>';
           break;
 
         case 'webform':
-          $string = 'Contact ' . $values['name'] . ' ' . $values['op'] . ' a webform';
+          $string = 'Contact <i>' . $values['name'] . '</i> <strong>' . $values['op'] . '</strong> a <i>webform</i>';
+          break;
+
+        case 'mailchimp':
+          if ($values['op'] == 'sent-to') {
+            $string = 'Contact <i>' . $values['name'] . '</i> <strong>received</strong> email campaign: ' . $values['resource_id'];
+          }
+          else if ($values['op'] == 'unsubscribed') {
+            $string = 'Contact <i>' . $values['name'] . '</i> was <strong>unsubscribed</strong> from mailchimp';
+          }
+          else if ($values['op'] == 'open-details') {
+            $string = 'Contact <i>' . $values['name'] . '</i> <strong>opened</strong> email campaign: ' . $values['resource_id'];
+          }
           break;
       }
 

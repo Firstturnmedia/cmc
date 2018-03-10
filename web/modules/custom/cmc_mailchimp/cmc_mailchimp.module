@@ -1,0 +1,312 @@
+<?php
+
+/**
+ * @file
+ * Contains cmc_mailchimp.module.
+ */
+
+use Drupal\cmc_redhen_activity\Entity\Activity;
+use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\field\Entity\FieldConfig;
+
+/**
+ * Implements hook_cron().
+ */
+function cmc_mailchimp_cron() {
+  $campaigns = cmc_mailchimp_get_all_campaigns();
+
+  // Email opens
+  $email_opens = cmc_mailchimp_get_email_opens($campaigns);
+
+  if ($email_opens) {
+    foreach ($email_opens as $item) {
+      // Get contact ID from email address
+      $contact_id = cmc_mailchimp_get_contact_id($item['email_address']);
+
+      // Check if activity record already exists
+      if (!$exists = cmc_mailchimp_activity_exists($contact_id, $item['campaign_id'], $mailchimp_type = 'open-details')) {
+        $op = 'open-details';
+        // Save activity
+        $email_opens_activity = cmc_mailchimp_mc_api_message_save($item['email_address'], $contact_id, $item['campaign_id'], $op);
+      }
+    }
+  }
+
+  // Email sent to
+  $email_sent_tos = cmc_mailchimp_get_email_sent_to($campaigns);
+
+  if ($email_sent_tos) {
+    foreach ($email_sent_tos as $email_sent_to) {
+      // Get contact ID from email address
+      $contact_id = cmc_mailchimp_get_contact_id($email_sent_to->email_address);
+
+      // Check if activity record already exists
+      if (!$exists = cmc_mailchimp_activity_exists($contact_id, $email_sent_to->campaign_id, $mailchimp_type = 'sent-to')) {
+        $op = 'sent-to';
+        // Save activity
+        $email_opens_activity = cmc_mailchimp_mc_api_message_save($email_sent_to->email_address, $contact_id, $email_sent_to->campaign_id, $op);
+      }
+    }
+  }
+}
+
+/**
+ * Helper function to get contact_id from email
+ */
+function cmc_mailchimp_get_contact_id($email) {
+  $contact_id = db_query("SELECT id FROM {redhen_contact} WHERE email = :email",
+    array(
+      ':email' => $email)
+    )->fetchField();
+
+  if (!empty($contact_id)) {
+   return $contact_id;
+  }
+  else {
+    return FALSE;
+  }
+}
+
+/**
+ * Helper function to check if activity exists
+ */
+function cmc_mailchimp_activity_exists($contact_id, $campaign_id, $mailchimp_type) {
+  $result = FALSE;
+
+  $query = \Drupal::entityQuery('cmc_redhen_activity')
+    ->condition('status', 1)
+    ->condition('contact_id', $contact_id)
+    ->condition('field_mailchimp_campaign_id.value', $campaign_id)
+    ->condition('field_mailchimp_type.value', $mailchimp_type)
+    ->condition('type', 'mailchimp');
+  $result = $query->execute();
+
+  return $result;
+}
+
+/**
+ * Helper function to get all campaigns from mc api
+ */
+function cmc_mailchimp_get_all_campaigns() {
+  $campaigns = FALSE;
+
+  // Get all mailchimp campaigns from mc api
+  $mcapi = mailchimp_get_api_object('MailchimpCampaigns');
+
+  if ($mcapi != null) {
+    $result = $mcapi->getCampaigns();
+
+    if ($result->total_items > 0) {
+      $campaigns = $result->campaigns;
+    }
+  }
+
+  return $campaigns;
+}
+
+/**
+ * Helper function to get email opens data per campaign from mc api
+ */
+function cmc_mailchimp_get_email_opens($campaigns) {
+  $email_open_data = FALSE;
+  $type = 'open-details';
+
+  if ($campaigns) {
+    foreach ($campaigns as $campaign) {
+      $mcapi = mailchimp_get_api_object('MailchimpReports');
+
+      if ($mcapi != null) {
+        // getCampaignReport($campaign_id, $type, $parameters = []
+        $result = $mcapi->getCampaignReport($campaign->id, $type);
+
+        if ($result->total_items > 0) {
+          foreach ($result->members as $member) {
+            //
+            if ($member->opens_count > 0) {
+              //$email_open_data[] = $member;
+              $email_open_data[] = [
+                'campaign_id' => $result->campaign_id,
+                'email_address' => $member->email_address,
+                'opens_count' => $member->opens_count,
+              ];
+            }
+          }
+        }
+      }
+    }
+  }
+
+  return $email_open_data;
+}
+
+/**
+ * Helper function to get email sent data per cmapaign from mc api
+ */
+function cmc_mailchimp_get_email_sent_to($campaigns) {
+  $sent_to_data = FALSE;
+  $type = 'sent-to';
+
+  if ($campaigns) {
+    foreach ($campaigns as $campaign) {
+      $mcapi = mailchimp_get_api_object('MailchimpReports');
+
+      if ($mcapi != null) {
+        // getCampaignReport($campaign_id, $type, $parameters = []
+        $result = $mcapi->getCampaignReport($campaign->id, $type);
+
+        if ($result->total_items > 0) {
+          foreach ($result->sent_to as $sent_to) {
+            $sent_to_data[] = $sent_to;
+          }
+        }
+      }
+    }
+  }
+
+  return $sent_to_data;
+}
+
+/**
+ * Save an activity message when source is mc api
+ */
+function cmc_mailchimp_mc_api_message_save($email, $contact_id, $campaign_id, $op) {
+  // Prep argument values
+  $argument_values = [
+    'name' => $email,
+    'op' => $op,
+    'type' => 'mailchimp',
+    'resource_id' => $campaign_id,
+  ];
+
+  // Create activity entity
+  $activity = Activity::create([
+    'type' => 'mailchimp',
+    'contact_id' => $contact_id,
+    'arguments' => $argument_values,
+    'field_mailchimp_campaign_id' => [
+      'value' => $campaign_id,
+    ],
+    'field_mailchimp_type' => [
+      'value' => $op
+    ],
+  ]);
+
+  // Save actvity
+  $activity->save();
+}
+
+/**
+ * Implements hook_mailchimp_subscribe_success($list_id, $email, $merge_vars).
+ */
+ // @todo this fires before the actual contact is saved, so you don't have the
+ // contact ID yet. Maybe try hook_redhen_contact_insert(Drupal\Core\Entity\EntityInterface $entity)
+
+/*function cmc_mailchimp_mailchimp_subscribe_success($list_id, $email, $merge_vars) {
+  $type = 'mailchimp';
+  $op = 'subscribed';
+
+  // Get email from contact id
+  $contact_id = cmc_mailchimp_get_contact_id($email);
+
+  // Prep argument values
+  $argument_values = [
+    'name' => $email,
+    'op' => $op,
+    'type' => $type,
+  ];
+
+  // Create activity entity
+  $activity = Activity::create([
+    'type' => $type,
+    'contact_id' => $contact_id,
+    'arguments' => $argument_values,
+    'field_mailchimp_type' => [
+      'value' => $op
+    ],
+  ]);
+
+  // Save actvity
+  $activity->save();
+}
+*/
+
+/**
+ * Implements hook_mailchimp_unsubscribe_success($list_id, $email).
+ */
+function cmc_mailchimp_mailchimp_unsubscribe_success($list_id, $email) {
+  $type = 'mailchimp';
+  $op = 'unsubscribed';
+
+  // Get email from contact id
+  $contact_id = cmc_mailchimp_get_contact_id($email);
+
+  // Prep argument values
+  $argument_values = [
+    'name' => $email,
+    'op' => $op,
+    'type' => $type,
+  ];
+
+  // Create activity entity
+  $activity = Activity::create([
+    'type' => $type,
+    'contact_id' => $contact_id,
+    'arguments' => $argument_values,
+    'field_mailchimp_type' => [
+      'value' => $op
+    ],
+  ]);
+
+  // Save actvity
+  $activity->save();
+}
+
+/**
+ * Implements hook_cmc_webform_contact_added($contact).
+ * Adds contact to mailchimp when webform survey is submitted.
+ */
+function cmc_mailchimp_cmc_webform_contact_added($contact) {
+  // Get field_tags
+  $field_tags = $contact->get('field_tags')->getValue();
+
+  // Build an array of tids contact is tagged with
+  foreach ($field_tags as $field_tag) {
+    $tids[] = $field_tag['target_id'];
+  }
+
+  // Get mailchimp/taxnomy mapping config
+  $cmc_mc_tax_mapping = \Drupal::config('cmc_mailchimp.taxonomy_mapping')->get();
+
+  $interest_groups = [];
+
+  // Iterate over config mapping and get interest groups
+  foreach ($cmc_mc_tax_mapping as $list) {
+    foreach ($list as $interest_group_id => $interest_group) {
+      $interest_groups[$interest_group_id] = $interest_group['tid_mappings'];
+    }
+  }
+
+  // Iterate over interest groups, find matching TIDs from tags, etc?
+  foreach ($interest_groups as $interest_group_id => $interest_group) {
+    foreach ($interest_group as $interest_id => $tid) {
+      if (!in_array($tid, $tids)) {
+        // unset any items that are not in the tids array
+        unset($interest_groups[$interest_group_id][$interest_id]);
+      }
+      else {
+        // Change values to match keys, which is the format MC wants
+        $interest_groups[$interest_group_id][$interest_id] = $interest_id;
+      }
+    }
+  }
+
+  // Get mc list id from contact field
+  $field = FieldConfig::loadByName($entity_type = 'redhen_contact', $bundle_name = 'individual', $field_name = 'field_mailchimp');
+  $mc_list_id = $field->getFieldStorageDefinition()->getSetting('mc_list_id');
+
+  // Get email
+  $email = $contact->email->value;
+
+  // Send data to mailchimp
+  $result = mailchimp_subscribe($mc_list_id, $email, $merge_vars = NULL, $interest_groups, $double_optin = FALSE, $format = 'html');
+}

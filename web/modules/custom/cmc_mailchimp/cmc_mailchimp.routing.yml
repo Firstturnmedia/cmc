@@ -1,0 +1,15 @@
+cmc_mailchimp.taxonomy_mapping:
+  path: '/admin/config/services/mailchimp/taxonomy-mapping'
+  defaults:
+    _title: 'Taxonomy Mapping'
+    _form: '\Drupal\cmc_mailchimp\Form\CmcMailchimpTaxonomyMapping'
+  requirements:
+    _permission: 'administer cmc mailchimp'
+
+cmc_mailchimp.default_controller_hello:
+  path: '/admin/cmc_mailchimp/test'
+  defaults:
+    _controller: '\Drupal\cmc_mailchimp\Controller\DefaultController::test'
+    _title: 'Test'
+  requirements:
+    _permission: 'access content'

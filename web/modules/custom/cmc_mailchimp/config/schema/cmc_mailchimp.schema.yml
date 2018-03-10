@@ -1,0 +1,3 @@
+cmc_mailchimp.taxonomy_mapping:
+  type: config_object
+  label: 'CMC Mailchimp taxonomy mapping configuration'
