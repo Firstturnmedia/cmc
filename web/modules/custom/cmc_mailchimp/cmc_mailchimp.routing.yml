@@ -1,15 +1,15 @@
-cmc_mailchimp.taxonomy_mapping:
-  path: '/admin/config/services/mailchimp/taxonomy-mapping'
+cmc_mailchimp.groups_overview:
+  path: '/admin/config/services/mailchimp/groups-overview'
   defaults:
-    _title: 'Taxonomy Mapping'
-    _form: '\Drupal\cmc_mailchimp\Form\CmcMailchimpTaxonomyMapping'
+    _title: 'Groups'
+    _controller: '\Drupal\cmc_mailchimp\Controller\GroupsOverview::content'
   requirements:
     _permission: 'administer cmc mailchimp'
 
-cmc_mailchimp.default_controller_hello:
-  path: '/admin/cmc_mailchimp/test'
+cmc_mailchimp.groups:
+  path: '/admin/config/services/mailchimp/groups/{mc_list_id}'
   defaults:
-    _controller: '\Drupal\cmc_mailchimp\Controller\DefaultController::test'
-    _title: 'Test'
+    _title: 'Groups Mapping'
+    _form: '\Drupal\cmc_mailchimp\Form\CmcMailchimpGroups'
   requirements:
-    _permission: 'access content'
+    _permission: 'administer cmc mailchimp'

@@ -1,5 +1,5 @@
-cmc_mailchimp.taxonomy_mapping:
-  route_name: cmc_mailchimp.taxonomy_mapping
+cmc_mailchimp.groups_overview:
+  route_name: cmc_mailchimp.groups_overview
   base_route: mailchimp.admin
-  title: 'Taxonomy Mapping'
-  weight: 20
+  title: 'Groups'
+  weight: 30

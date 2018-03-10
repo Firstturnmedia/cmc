@@ -266,6 +266,9 @@ function cmc_mailchimp_mailchimp_unsubscribe_success($list_id, $email) {
  * Adds contact to mailchimp when webform survey is submitted.
  */
 function cmc_mailchimp_cmc_webform_contact_added($contact) {
+  // Get contact email
+  $email = $contact->email->value;
+
   // Get field_tags
   $field_tags = $contact->get('field_tags')->getValue();
 
@@ -274,19 +277,21 @@ function cmc_mailchimp_cmc_webform_contact_added($contact) {
     $tids[] = $field_tag['target_id'];
   }
 
+  // Get mc list id from contact field
+  $field = FieldConfig::loadByName($entity_type = 'redhen_contact', $bundle_name = 'individual', $field_name = 'field_mailchimp');
+  $mc_list_id = $field->getFieldStorageDefinition()->getSetting('mc_list_id');
+
   // Get mailchimp/taxnomy mapping config
-  $cmc_mc_tax_mapping = \Drupal::config('cmc_mailchimp.taxonomy_mapping')->get();
+  $groups_mapping = \Drupal::config('cmc_mailchimp.groups_mapping.' . $mc_list_id)->get();
 
   $interest_groups = [];
 
-  // Iterate over config mapping and get interest groups
-  foreach ($cmc_mc_tax_mapping as $list) {
-    foreach ($list as $interest_group_id => $interest_group) {
-      $interest_groups[$interest_group_id] = $interest_group['tid_mappings'];
-    }
+  // Get tids part of config
+  foreach ($groups_mapping as $interest_group_id => $interest_group) {
+    $interest_groups[$interest_group_id] = $interest_group['tids'];
   }
 
-  // Iterate over interest groups, find matching TIDs from tags, etc?
+  // Build interest groups array in format mailchimp expects
   foreach ($interest_groups as $interest_group_id => $interest_group) {
     foreach ($interest_group as $interest_id => $tid) {
       if (!in_array($tid, $tids)) {
@@ -300,13 +305,10 @@ function cmc_mailchimp_cmc_webform_contact_added($contact) {
     }
   }
 
-  // Get mc list id from contact field
-  $field = FieldConfig::loadByName($entity_type = 'redhen_contact', $bundle_name = 'individual', $field_name = 'field_mailchimp');
-  $mc_list_id = $field->getFieldStorageDefinition()->getSetting('mc_list_id');
-
-  // Get email
-  $email = $contact->email->value;
+  // @todo add merge vars value for first and last name?
 
   // Send data to mailchimp
   $result = mailchimp_subscribe($mc_list_id, $email, $merge_vars = NULL, $interest_groups, $double_optin = FALSE, $format = 'html');
+
+  // @todo record mailchimp subscribe activity?
 }

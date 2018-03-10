@@ -7,75 +7,69 @@ use Drupal\Core\Serialization\Yaml;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Class CmcMailchimpTaxonomyMapping
+ * Class CmcMailchimpGroups
  */
-class CmcMailchimpTaxonomyMapping extends FormBase {
+class CmcMailchimpGroups extends FormBase {
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'cmc_mailchimp_taxonomy_mapping';
+    return 'cmc_mailchimp_groups';
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
-    // Get all mailchimp lists from mc api
-    $lists = $this->getMailchimpLists();
+  public function buildForm(array $form, FormStateInterface $form_state, $mc_list_id = NULL) {
+    // Set mc list id into storage for use in submit handler
+    $form_state->setStorage(['mc_list_id' => $mc_list_id]);
+
     //
     $mcapi = mailchimp_get_api_object('MailchimpLists');
-    // Get config for default values
-    $config = $this->config('cmc_mailchimp.taxonomy_mapping')->getRawData();
 
-    foreach ($lists as $list) {
-      // MC lists
-      $form[$list->id] = [
-        '#type' => 'details',
-        '#title' => t('Mailchimp List: ' . $list->name),
-        '#open' => TRUE,
-        '#tree' => TRUE,
-      ];
+    if ($mcapi != null) {
+      // Get config for default values
+      $config = $this->config('cmc_mailchimp.groups_mapping.' . $mc_list_id)->getRawData();
 
       // MC "interest categories"
-      $interest_categories_result = $mcapi->getInterestCategories($list->id);
+      $interest_categories_result = $mcapi->getInterestCategories($mc_list_id);
 
       if ($interest_categories_result->total_items > 0) {
         $interest_categories = $interest_categories_result->categories;
 
         foreach ($interest_categories as $interest_category) {
           //
-          $form[$list->id][$interest_category->id . '_details'] = [
+          $form[$interest_category->id . '_details'] = [
             '#type' => 'details',
             '#title' => t('Mailchimp Interest Category: ' . $interest_category->title),
             '#open' => TRUE,
-            //'#tree' => TRUE,
+            '#tree' => TRUE,
           ];
 
           // MC interest category -> taxoomy vocab
-          $form[$list->id][$interest_category->id . '_details'][$interest_category->id] = [
+          $form[$interest_category->id . '_details'][$interest_category->id] = [
             '#type' => 'select',
             '#title' => t($interest_category->title . ' [' . $interest_category->id . ']'),
             '#description' => t('Select the taxonomy vocab to map to this mailchimp interest category'),
             '#options' => $this->getTaxonomyVocabsAsSelectOptions(),
-            '#default_value' => $config[$list->id][$interest_category->id]['vid'],
+            '#default_value' => $config[$interest_category->id]['vid'],
             '#empty_value' => '',
             '#empty_option' => '- Select Taxonomy Vocabulary -',
           ];
 
-          $interests_result = $mcapi->getInterests($list->id, $interest_category->id);
+          $interests_result = $mcapi->getInterests($mc_list_id, $interest_category->id);
 
           if ($interests_result->total_items > 0) {
             $interests = $interests_result->interests;
 
             foreach ($interests as $interest) {
               // MC interest -> taxoomy term
-              $form[$list->id][$interest_category->id . '_details'][$interest->id] = [
+              $form[$interest_category->id . '_details'][$interest->id] = [
                 '#type' => 'select',
                 '#title' => t($interest->name . ' [' . $interest->id . ']'),
                 '#description' => t('Select the taxonomy term to map to this mailchimp interest'),
                 '#options' => $this->getTaxonomyTermsAsSelectOptions(),
-                '#default_value' => $config[$list->id][$interest_category->id]['tid_mappings'][$interest->id],
+                '#default_value' => $config[$interest_category->id]['tids'][$interest->id],
                 '#empty_value' => '',
                 '#empty_option' => '- Select Taxonomy Term -',
               ];
@@ -98,56 +92,42 @@ class CmcMailchimpTaxonomyMapping extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $values = $form_state->cleanValues()->getValues();
+    $storage = $form_state->getStorage();
 
-    //$debug = $values;
+    // Alter array to match the config array structure we want.
+    foreach ($values as $key => $interest_category) {
+      // Remove _details from keys
+      $interest_category_id = str_replace('_details', '', $key);
+      $values[$interest_category_id] = $interest_category;
 
+      // Unset original _details array values
+      unset($values[$key]);
 
-    $mapping = [
-      'ba1e8e8bdb' => [
-        '2a71d672c9' => [
-          'vid' => 'interests',
-          'tid_mappings' => [
-            'fea1615ce0' => 1,
-            '0babb9ccfb' => 2,
-            '66d76b4979' => 3
-          ],
-        ],
-        '92a0ea5bfc' => [
-          'vid' => 'volunteerism_engagement',
-          'tid_mappings' => [
-            '6f8983461a' => 6,
-            '00d072a55d' => 5,
-            '987237e289' => 4
-          ],
-        ],
-      ],
-    ];
-
-    // Get config object
-    $config = \Drupal::configFactory()->getEditable('cmc_mailchimp.taxonomy_mapping');
-    // Set data
-    $config->setData($mapping);
-    // Save config
-    $config->save(TRUE);
-
-    drupal_set_message('Taxonomy mappings have been saved.');
-  }
-
-  /**
-   * Helper function to get all mailchimp lists
-   */
-  private function getMailchimpLists() {
-    // Get all mailchimp lists from mc api
-    $mcapi = mailchimp_get_api_object('MailchimpLists');
-    if ($mcapi != null) {
-      $result = $mcapi->getLists();
-
-      if ($result->total_items > 0) {
-        $lists = $result->lists;
+      // Set vid as key
+      foreach ($interest_category as $key => $value) {
+        if ($key === $interest_category_id) {
+          // Set vid as key
+          $values[$interest_category_id]['vid'] = $value;
+          // Unset original array value
+          unset($values[$interest_category_id][$interest_category_id]);
+        }
+        // Move tids into 'tids'
+        else {
+          $values[$interest_category_id]['tids'][$key] = $value;
+          // Unset
+          unset($values[$interest_category_id][$key]);
+        }
       }
     }
 
-    return $lists;
+    // Get config object
+    $config = \Drupal::configFactory()->getEditable('cmc_mailchimp.groups_mapping.' . $storage['mc_list_id']);
+    // Set data
+    $config->setData($values);
+    // Save config
+    $config->save(TRUE);
+    //
+    drupal_set_message('Groups mapping has been saved!');
   }
 
   /**
