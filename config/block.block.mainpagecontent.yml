@@ -1,0 +1,20 @@
+uuid: c4e6f35c-b158-4ccd-a985-b468c1f8375e
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - cmb_theme
+id: mainpagecontent
+theme: cmb_theme
+region: content
+weight: 1
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }

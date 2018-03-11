@@ -1,0 +1,20 @@
+uuid: 561d1001-bc06-4951-854b-cec3e1e14473
+langcode: en
+status: true
+dependencies:
+  theme:
+    - cmb_theme
+id: tabs
+theme: cmb_theme
+region: content
+weight: -1
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: true
+visibility: {  }
