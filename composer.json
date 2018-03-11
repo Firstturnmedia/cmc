@@ -22,10 +22,12 @@
     "drupal/core": "^8",
     "drupal/entity": "^1.0",
     "drupal/features": "^3.7",
+    "drupal/mailchimp": "^1.6",
     "drupal/redhen": "^1.0@alpha",
     "drupal/simple_block": "^1.0@beta",
     "drupal/views_bulk_operations": "^2.0",
     "drupal/webform": "^5.0@RC",
+    "drupal/webform_mailchimp": "^5.3",
     "drush/drush": "~8",
     "rvtraveller/qs-composer-installer": "^1.1",
     "webflo/drupal-core-strict": "^8"

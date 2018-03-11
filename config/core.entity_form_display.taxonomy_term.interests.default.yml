@@ -1,0 +1,37 @@
+uuid: 6d5cca60-3cf3-4ee8-ac05-5142f375d92c
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.interests
+  module:
+    - path
+    - text
+id: taxonomy_term.interests.default
+targetEntityType: taxonomy_term
+bundle: interests
+mode: default
+content:
+  description:
+    type: text_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 30
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

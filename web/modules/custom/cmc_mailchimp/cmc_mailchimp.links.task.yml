@@ -1,0 +1,5 @@
+cmc_mailchimp.groups_overview:
+  route_name: cmc_mailchimp.groups_overview
+  base_route: mailchimp.admin
+  title: 'Groups'
+  weight: 30

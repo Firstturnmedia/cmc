@@ -1,0 +1,4 @@
+administer cmc mailchimp:
+  title: 'administer cmc mailchimp'
+  description: 'Access the cmc mailchimp configuration options.'
+  restrict access: TRUE

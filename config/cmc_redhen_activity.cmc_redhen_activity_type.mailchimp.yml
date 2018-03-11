@@ -1,0 +1,6 @@
+uuid: 586e334e-c97a-4de3-b658-a135c2eaab55
+langcode: en
+status: true
+dependencies: {  }
+id: mailchimp
+label: Mailchimp

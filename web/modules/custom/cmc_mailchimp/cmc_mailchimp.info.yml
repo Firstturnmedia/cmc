@@ -1,0 +1,7 @@
+name: CMC Mailchimp
+type: module
+description: CMC Mailchimp
+core: 8.x
+package: CMC
+dependencies:
+  - mailchimp

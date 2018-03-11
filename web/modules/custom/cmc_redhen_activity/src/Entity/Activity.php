@@ -225,7 +225,8 @@ class Activity extends ContentEntityBase implements ActivityInterface {
       ->setDisplayOptions('view', [
         'label' => 'hidden',
         // @todo this might be wrong?
-        'type' => 'redhen_contact',
+        //'type' => 'redhen_contact',
+        'type' => 'author',
         'weight' => 0,
       ])
       ->setDisplayOptions('form', [

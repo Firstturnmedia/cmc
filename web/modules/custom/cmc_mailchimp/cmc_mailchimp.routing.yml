@@ -1,0 +1,15 @@
+cmc_mailchimp.groups_overview:
+  path: '/admin/config/services/mailchimp/groups-overview'
+  defaults:
+    _title: 'Groups'
+    _controller: '\Drupal\cmc_mailchimp\Controller\GroupsOverview::content'
+  requirements:
+    _permission: 'administer cmc mailchimp'
+
+cmc_mailchimp.groups:
+  path: '/admin/config/services/mailchimp/groups/{mc_list_id}'
+  defaults:
+    _title: 'Groups Mapping'
+    _form: '\Drupal\cmc_mailchimp\Form\CmcMailchimpGroups'
+  requirements:
+    _permission: 'administer cmc mailchimp'

@@ -246,29 +246,15 @@ class AddContactWebformHandler extends WebformHandlerBase {
       // Maybe find a better way to do this?
       $contact->set('field_tags', $field_tags_tids);
 
+      // @todo Add a hook for $contact object alter
+      //
+
       // Save contact
       $contact->save();
 
-      // Create webform activity
-      $moduleHandler = \Drupal::service('module_handler');
-      if ($moduleHandler->moduleExists('cmc_redhen_activity')) {
-        // Prep argument values
-        $argument_values = [
-          'name' => $contact->email->value,
-          'op' => 'submitted',
-          'type' => 'webform'
-        ];
-
-        // Create activity entity
-        $activity = Activity::create([
-          'type' => 'webform',
-          'contact_id' => $contact->id->value,
-          'arguments' => $argument_values
-        ]);
-
-        // Save actvity
-        $activity->save();
-      }
+      // Allow other modules to use the $contact object
+      // @see hook_cmc_webform_contact_added($contact)
+      \Drupal::moduleHandler()->invokeAll('cmc_webform_contact_added', array($contact));
     }
     // @todo fix exception catching
     catch (EntityStorageException $e) {
