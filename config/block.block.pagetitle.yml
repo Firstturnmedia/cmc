@@ -1,0 +1,18 @@
+uuid: 4e071423-39f5-4dc9-9945-749de2272f25
+langcode: en
+status: true
+dependencies:
+  theme:
+    - cmb_theme
+id: pagetitle
+theme: cmb_theme
+region: content
+weight: 0
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  provider: core
+  label_display: '0'
+visibility: {  }
