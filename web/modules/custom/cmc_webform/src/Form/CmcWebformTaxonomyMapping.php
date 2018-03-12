@@ -5,35 +5,12 @@ namespace Drupal\cmc_webform\Form;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Serialization\Yaml;
-//use Drupal\webform_sugarcrm\WebformSugarCrmManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Class WebformSugarCrmFieldsMapping
- *
- * @package Drupal\webform_sugarcrm\Form
+ * Class CmcWebformTaxonomyMapping
  */
 class CmcWebformTaxonomyMapping extends FormBase {
-
-  /**
-   * Stores Sugar CRM manager.
-   *
-   * @var \Drupal\webform_sugarcrm\SugarCrmManager
-   */
-  /*private $sugarCrm;
-
-  public function __construct(WebformSugarCrmManager $sugarCrm) {
-    $this->sugarCrm = $sugarCrm;
-  }
-  */
-  /**
-   * {@inheritdoc}
-   */
-  /*public static function create(ContainerInterface $container) {
-    return new static ($container->get('webform_sugarcrm.sugarcrm_manager'));
-  }
-  */
-
   /**
    * {@inheritdoc}
    */
@@ -57,10 +34,10 @@ class CmcWebformTaxonomyMapping extends FormBase {
 
     // @todo why do we do this?
     // Create component container.
-    $form['webform_container'] = array(
-      '#prefix' => "<div id=form-ajax-wrapper>",
-      '#suffix' => "</div>",
-    );
+    $form['webform_container'] = [
+      '#type' => 'item',
+      '#markup' => 'Listed below are the Webform questions with multiple choice answers.',
+    ];
 
     // Get webform fields and default values for them.
     $cmc_webform_taxonomy_mapping = $this->config('cmc_webform.taxonomy_mapping.' . $webform->id())->getRawData();
@@ -78,10 +55,10 @@ class CmcWebformTaxonomyMapping extends FormBase {
       if ($webform_element['#type'] == 'checkboxes') {
         // Create form elements for each Webform field.
         $form['webform_container'][$webform_element_key] = [
-          '#type' => 'fieldset',
-          '#title' => $webform_element['#title'],
-          '#collapsible' => TRUE,
-          '#collapsed' => FALSE,
+          '#type' => 'details',
+          '#title' => 'Webform Question: ' . $webform_element['#title'],
+          '#description' => 'Listed below are the options/answers for this question. Select the taxonomy term(s) you want to map to these options/answers.',
+          '#open' => TRUE,
         ];
 
         // Get webform element options
@@ -137,13 +114,10 @@ class CmcWebformTaxonomyMapping extends FormBase {
       }
     }
 
-    $form['submit'] = array(
+    $form['submit'] = [
       '#type' => 'submit',
       '#value' => t('Save'),
-    );
-
-    // Send form to theme/twig template
-    //$form['#theme'] = 'cmc_webform_taxonomy_mapping';
+    ];
 
     return $form;
   }
@@ -199,25 +173,14 @@ class CmcWebformTaxonomyMapping extends FormBase {
     $config->setData($data);
     // Save config
     $config->save(TRUE);
-
+    //
     drupal_set_message('Taxonomy mappings have been saved.');
   }
-
-  /**
-   * Ajax callback.
-   */
-  public function formAjaxCallback($form, $form_state) {
-    return $form['webform_container'];
-  }
-
 
   /**
    * Get target bundles
    */
   private function getTargetBundles($webform_id) {
-    // Hard coded for now, make this dynamic, pulling from config settings per webform
-    //$target_bundles = ['interests', 'volunteerism_engagement'];
-
     $taxonomy_config = \Drupal::config('cmc_webform.taxonomy_config.' . $webform_id);
     $target_bundles = $taxonomy_config->get();
 
