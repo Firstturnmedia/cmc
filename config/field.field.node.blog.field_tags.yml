@@ -1,17 +1,17 @@
-uuid: 712ddd64-de9c-4d0f-9921-0e23a4957313
+uuid: 90717f14-ef21-4054-88c5-b198bd2adcfe
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_categories
+    - field.storage.node.field_tags
     - node.type.blog
     - taxonomy.vocabulary.interests
     - taxonomy.vocabulary.volunteerism_engagement
-id: node.blog.field_categories
-field_name: field_categories
+id: node.blog.field_tags
+field_name: field_tags
 entity_type: node
 bundle: blog
-label: Categories
+label: Tags
 description: ''
 required: false
 translatable: false
