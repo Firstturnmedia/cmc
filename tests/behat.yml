@@ -17,7 +17,7 @@ default:
         - Drupal\DrupalExtension\Context\DrushContext
   extensions:
     Behat\MinkExtension:
-      files_path: "./features/fixtures"
+      files_path: "%paths.base%/fixtures/"
       goutte: ~
       javascript_session: selenium2
       selenium2:
