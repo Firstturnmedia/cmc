@@ -1,0 +1,13 @@
+.mailchimp-contact-report ul {
+  list-style-type: none;
+  margin:0;
+  padding:0;
+}
+.mailchimp-contact-report li {
+  float:left;
+  width:250px;
+}
+.mailchimp-contact-report tspan.count {
+  font-size: 2.75em;
+  font-weight: 900;
+}

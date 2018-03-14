@@ -13,3 +13,11 @@ cmc_mailchimp.groups:
     _form: '\Drupal\cmc_mailchimp\Form\CmcMailchimpGroups'
   requirements:
     _permission: 'administer cmc mailchimp'
+
+cmc_mailchimp.contact_report:
+  path: 'redhen/contact/{contact_id}/mailchimp-report'
+  defaults:
+    _title: 'Contact Mailchimp Report'
+    _controller: '\Drupal\cmc_mailchimp\Controller\ContactReport::content'
+  requirements:
+    _permission: 'administer cmc mailchimp'
