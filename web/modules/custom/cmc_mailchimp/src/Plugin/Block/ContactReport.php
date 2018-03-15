@@ -25,9 +25,15 @@ class ContactReport extends BlockBase {
       $email_open_count = $this->getActivityCount($contact_id, $mailchimp_type = 'open-details');
       $email_open_sent = $this->getActivityCount($contact_id, $mailchimp_type = 'sent-to');
 
-      $email_open_percent = $email_open_sent / $email_open_count;
-      $email_open_percent_formatted = number_format($email_open_percent * 100, 0);
+      // Set default open percent to 0
+      $email_open_percent_formatted = 0;
 
+      if ($email_open_count > 0 && $email_open_sent > 0) {
+        $email_open_percent = $email_open_sent / $email_open_count;
+        $email_open_percent_formatted = number_format($email_open_percent * 100, 0);
+      }
+
+      // @todo this seems unecessary given the tpl doesnt use these vars?
       $data = [
         'emails_open' => $email_open_percent_formatted,
         'emails_sent' => $email_open_sent,
@@ -35,7 +41,7 @@ class ContactReport extends BlockBase {
 
       return [
         '#theme' => 'cmc_mailchimp_contact_report',
-        // @todo this fully disabled cache for this block, try to make it smarter?
+        // @todo this fully disabled cache for this block, add proper cache context
         '#cache' => [
           'max-age' => 0,
         ],
