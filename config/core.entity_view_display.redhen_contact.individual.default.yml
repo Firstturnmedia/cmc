@@ -14,7 +14,7 @@ bundle: individual
 mode: default
 content:
   email:
-    label: inline
+    label: above
     type: email_mailto
     weight: 0
     region: content
@@ -40,7 +40,7 @@ content:
     type: string
     weight: 1
     region: content
-    label: inline
+    label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
@@ -48,7 +48,7 @@ content:
     type: string
     weight: 3
     region: content
-    label: inline
+    label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
@@ -56,12 +56,12 @@ content:
     type: string
     weight: 2
     region: content
-    label: inline
+    label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
   uid:
-    label: inline
+    label: above
     type: entity_reference_label
     settings:
       link: true

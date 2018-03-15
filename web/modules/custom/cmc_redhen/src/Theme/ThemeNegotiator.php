@@ -13,7 +13,8 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
     $debug = $route_match->getRouteName();
     // Force admin theme for redhen contact detail pgs.
     $possible_routes = [
-      'entity.redhen_contact.canonical'
+      'entity.redhen_contact.canonical',
+      'cmc_mailchimp.contact_report'
     ];
 
     return (in_array($route_match->getRouteName(), $possible_routes));

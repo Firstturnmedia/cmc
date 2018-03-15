@@ -1,0 +1,26 @@
+uuid: d48c04a8-c4b0-49d0-9879-a2c57d1a511e
+langcode: en
+status: true
+dependencies:
+  module:
+    - cmc_mailchimp
+    - system
+  theme:
+    - seven
+id: mailchimpcontactreport
+theme: seven
+region: content
+weight: -2
+provider: null
+plugin: cmc_mailchimp_contact_report
+settings:
+  id: cmc_mailchimp_contact_report
+  label: 'Mailchimp Activity'
+  provider: cmc_mailchimp
+  label_display: visible
+visibility:
+  request_path:
+    id: request_path
+    pages: '/redhen/contact/*'
+    negate: false
+    context_mapping: {  }

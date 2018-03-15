@@ -17,4 +17,4 @@ Feature: Blog Content Type
     Then I should see "Behat Blog Test has been created."
     And I should see "Behat Blog Test Body"
     And I should see an "article img" element
-    And I wait "2" seconds
+    And I wait "10" seconds

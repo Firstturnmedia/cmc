@@ -1,0 +1,7 @@
+cmc_mailchimp:
+  version: 1.x
+  css:
+    theme:
+      css/cmc-mailchimp.css: {}
+  js:
+    js/cmc-mailchimp.js: {}
