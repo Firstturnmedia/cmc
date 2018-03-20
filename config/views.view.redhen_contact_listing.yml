@@ -31,7 +31,7 @@ display:
       access:
         type: perm
         options:
-          perm: 'administer org entities'
+          perm: 'administer contact entities'
       cache:
         type: tag
         options: {  }
