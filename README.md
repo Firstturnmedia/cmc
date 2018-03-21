@@ -19,6 +19,7 @@ Composer Guide:
 | Updating all contrib projects and Drupal core   | ```drush pm-update```                         | ```composer update```                             |
 | Updating a single contrib project               | ```drush pm-update PROJECT```                 | ```composer update drupal/PROJECT```              |
 | Updating Drupal core                            | ```drush pm-update drupal```                  | ```composer update drupal/core```                 |
+| Remove module installed by composer             | n/a                                           | ```composer remove drupal/PROJECT```              |
 
 The magic is that Composer, unlike Drush, is a *dependency manager*. If module ```foo version: 1.0.0``` depends on ```baz version: 3.2.0```, Composer will not let you update baz to ```3.3.0``` (or downgrade it to ```3.1.0```, for that matter). Drush has no concept of dependency management. If you've ever accidentally hosed a site because of dependency issues like this, you've probably already realized how valuable Composer can be.
 
