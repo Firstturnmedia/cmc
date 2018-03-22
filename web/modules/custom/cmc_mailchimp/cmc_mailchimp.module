@@ -335,3 +335,40 @@ function cmc_mailchimp_preprocess_page(&$vars) {
     unset($vars['page']['content']['mailchimpcontactreport']);
   }
 }
+
+/**
+ * Implements template_preprocess_views_view_row_rss(&$variables)
+ *
+ * Overide/alter values in views rss.
+ * This is a temporary solution until views_rss module is avail.
+ */
+function cmc_mailchimp_preprocess_views_view_row_rss(&$variables) {
+  // @todo Add check to only run this on the taxonomy term rss view
+
+  // Get the nid and load the node
+  $nid = $variables['row']->nid;
+  $node = \Drupal\node\Entity\Node::load($nid);
+
+  // Strip all html tags
+  $body = strip_tags($node->body->value);
+  // Get first 150 chars
+  $body = substr($body, 0, 250);
+
+  // Return value to twig
+  $variables['description'] = $body;
+
+  // Get image
+  $field_image = $node->field_image[0]->entity;
+
+  $image = [];
+  // Get uri
+  $img_uri = $field_image->uri->value;
+  $img_src = \Drupal\image\Entity\ImageStyle::load('large')->buildUrl($img_uri);
+
+  $image = [
+    'src' => $img_src,
+    // Add width, height, and type (image/jpeg, etc)
+  ];
+
+  $variables['media'] = $image;
+}
