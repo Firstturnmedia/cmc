@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.blog.body
     - field.field.node.blog.field_image
     - field.field.node.blog.field_tags
+    - image.style.large
     - node.type.blog
   module:
     - image
@@ -27,7 +28,7 @@ content:
     weight: 1
     label: hidden
     settings:
-      image_style: ''
+      image_style: large
       image_link: ''
     third_party_settings: {  }
     type: image
