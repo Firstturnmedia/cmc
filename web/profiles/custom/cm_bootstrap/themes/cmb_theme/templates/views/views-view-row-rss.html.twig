@@ -19,7 +19,7 @@
   <title>{{ title }}</title>
   <link>{{ link }}</link>
   <description>{{ description }}</description>
-  <media:content url="{{ media.src }}" medium="image">
+  <media:content url="{{ media.src }}" medium="image"/>
   {% for item in item_elements -%}
   <{{ item.key }}{{ item.attributes -}}
   {% if item.value -%}
