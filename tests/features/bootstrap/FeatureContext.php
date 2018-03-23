@@ -247,4 +247,27 @@ class FeatureContext extends RawDrupalContext implements Context, SnippetAccepti
         $html = preg_replace('#\</title\>.*\</head\>#sU', '</title></head>', $html);
         return $html;
     }
+
+  /* @todo delete everything above? */
+
+  /**
+   * Entities by entity type and key.
+   *
+   * $entities array
+   *   To delete after scenario.
+   *
+   * @var array
+   */
+  //protected $entities = [];
+
+  /**
+   * Remove contacts that were created during behat testing.
+   *
+   * @AfterScenario
+   */
+  /*public function cleanupContacts() {
+    // Get contact from email address
+    $debug = $this->entities;
+  }
+  */
 }
