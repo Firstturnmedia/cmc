@@ -23,6 +23,7 @@ Feature: Blog Content Type
     And I attach the file "images/image.jpg" to "Image"
     And I wait "2" seconds
     And I fill in "Alternative text" with "Image alt text"
+    #And I select the first autocomplete option for "Social" on the "TAGS" field
     When I press "Save"
     And I wait "2" seconds
     Then I should see "Behat Blog Test has been created."

@@ -4,11 +4,11 @@ cmc_webform.taxonomy_mapping:
     _title: 'CMC Webform - Taxonomy fields mapping'
     _form: '\Drupal\cmc_webform\Form\CmcWebformTaxonomyMapping'
   requirements:
-    _permission: 'edit webform assets'
+    _permission: 'administer cmc webform'
 cmc_webform.taxonomy_config:
   path: '/admin/structure/webform/manage/{webform}/taxonomy-config'
   defaults:
     _title: 'CMC Webform - Taxonomy Config'
     _form: '\Drupal\cmc_webform\Form\CmcWebformTaxonomyConfig'
   requirements:
-    _permission: 'edit webform assets'
+    _permission: 'administer cmc webform'

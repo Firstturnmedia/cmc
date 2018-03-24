@@ -92,16 +92,11 @@ class CmcWebformTaxonomyMapping extends FormBase {
             }
           }
 
-          // Webform element option (answer)
-          $form['webform_container'][$webform_element_key][$webform_element_option_value . '_cmc_webform_answer'] = [
-            '#type' => 'item',
-            '#markup' => $webform_element_option_text,
-          ];
-
           // Taxonomy entity autocomplete form element
           // @see https://www.drupal.org/node/2418529
           $form['webform_container'][$webform_element_key][$webform_element_option_value . '_cmc_webform_taxonomy'] = [
             '#type' => 'entity_autocomplete',
+            '#title' => $webform_element_option_text,
             '#target_type' => 'taxonomy_term',
             '#selection_settings' => [
               'target_bundles' => $target_bundles,

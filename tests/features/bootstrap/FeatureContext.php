@@ -265,9 +265,176 @@ class FeatureContext extends RawDrupalContext implements Context, SnippetAccepti
    *
    * @AfterScenario
    */
-  /*public function cleanupContacts() {
+  public function cleanupContact() {
+    $email = 'behat@firstturnmedia.com';
+
     // Get contact from email address
-    $debug = $this->entities;
+    $contact_id = db_query("SELECT id FROM {redhen_contact} WHERE email = :email",
+      array(
+        ':email' => $email)
+      )->fetchField();
+
+    if (!empty($contact_id)) {
+      // Load the contact
+      $contact = \Drupal::entityTypeManager()->getStorage('redhen_contact')->load($contact_id);
+      // Delete the contact
+      if (!is_null($contact)) {
+        $contact->delete();
+      }
+    }
   }
-  */
+
+  /**
+   * Remove webform that was created during testing.
+   *
+   * @AfterScenario
+   */
+  public function cleanupWebform() {
+    $webform_id = 'behat_webform_create_test';
+    // Load the webform
+    $webform_entity = \Drupal::entityTypeManager()->getStorage('webform')->load($webform_id);
+    // Delete webform
+    if (!is_null($webform_entity)) {
+      $webform_entity->delete();
+    }
+
+    // Delete webform related config
+    \Drupal::configFactory()->getEditable('cmc_webform.taxonomy_config.behat_webform_create_test')->delete();
+    \Drupal::configFactory()->getEditable('cmc_webform.taxonomy_mapping.behat_webform_create_test')->delete();
+  }
+
+  /**
+   * Click an element
+   *
+   * @param $selector string
+   *   The css selector of the element.
+   *
+   * @When /^I click on the element "([^"]*)"$/
+   */
+  public function iClickOnTheElement($selector) {
+    $session = $this->getSession();
+    $element = $session->getPage()->find(
+      'xpath',
+      $session->getSelectorsHandler()->selectorToXpath('css', $selector)
+    );
+    if (null === $element) {
+      throw new \InvalidArgumentException(sprintf('Cannot find element: "%s"', $selector));
+    }
+
+    $element->click();
+
+  }
+
+  /**
+   * @When I fill in a field with :arg1 using css selector :arg2
+   */
+  public function fillFieldUsingCss($value, $selector) {
+    $element = $this->getSession()->getPage()->find('css', $selector);
+    if (null === $element) {
+      throw new ElementNotFoundException($this->getSession(), 'form field', 'css selector', $selector);
+    }
+
+    $element->setValue($value);
+  }
+
+  /**
+   * @When I fill in the autocomplete :autocomplete with :text and click :popup
+   */
+  public function fillInDrupalAutocomplete($autocomplete, $text, $popup) {
+    //$el = $this->getSession()->getPage()->findField($autocomplete);
+    $el = $this->getSession()->getPage()->find('css', $autocomplete);
+    $el->focus();
+
+    // Set the autocomplete text then put a space at the end which triggers
+    // the JS to go do the autocomplete stuff.
+    $el->setValue($text);
+    $el->keyUp(' ');
+
+    // Sadly this grace of 1 second is needed here.
+    $this->wait(2);
+    $this->minkContext->iWaitForAjaxToFinish();
+
+    // Drupal autocompletes have an id of autocomplete which is bad news
+    // if there are two on the page.
+    /*$autocomplete = $this->getSession()->getPage()->findById('autocomplete');
+
+    if (empty($autocomplete)) {
+      throw new ExpectationException(t('Could not find the autocomplete popup box'), $this->getSession());
+    }
+
+    $popup_element = $autocomplete->find('xpath', "//div[text() = '{$popup}']");
+
+    if (empty($popup_element)) {
+      throw new ExpectationException(t('Could not find autocomplete popup text @popup', array(
+        '@popup' => $popup)), $this->getSession());
+    }
+
+    $popup_element->click();*/
+
+    $session = $this->getSession();
+    $xpath = $el->getXpath();
+    $driver = $session->getDriver();
+
+    // Press the down arrow to select the first option.
+    $driver->keyDown($xpath, 40);
+    $driver->keyUp($xpath, 40);
+
+    $this->wait(2);
+    $this->minkContext->iWaitForAjaxToFinish();
+
+    // Press the Enter key to confirm selection, copying the value into the field.
+    $driver->keyDown($xpath, 13);
+    $driver->keyUp($xpath, 13);
+  }
+
+  /**
+   * @When I select the first autocomplete option for :text on the :field field
+   */
+  public function iSelectFirstAutocomplete($text, $field) {
+    $session = $this->getSession();
+    $page = $session->getPage();
+    $element = $page->findField($field);
+
+    if (empty($element)) {
+      throw new \Exception(sprintf('We couldn\'t find "%s" on the page', $field));
+    }
+    $page->fillField($field, $text);
+
+    $xpath = $element->getXpath();
+    $driver = $session->getDriver();
+
+    // autocomplete.js uses key down/up events directly.
+
+    // Press the backspace key.
+    $driver->keyDown($xpath, 8);
+    $driver->keyUp($xpath, 8);
+
+    // Retype the last character.
+    $chars = str_split($text);
+    $last_char = array_pop($chars);
+    $driver->keyDown($xpath, $last_char);
+    $driver->keyUp($xpath, $last_char);
+
+    // Wait for AJAX to finish.
+    $this->minkContext->iWaitForAjaxToFinish();
+
+    // And make sure the autocomplete is showing.
+    $this->getSession()->wait(5000, 'jQuery("#autocomplete").show().length > 0');
+
+    // And wait for 1 second just to be sure.
+    sleep(1);
+
+    // Press the down arrow to select the first option.
+    $driver->keyDown($xpath, 40);
+    $driver->keyUp($xpath, 40);
+
+    // Press the Enter key to confirm selection, copying the value into the field.
+    $driver->keyDown($xpath, 13);
+    $driver->keyUp($xpath, 13);
+
+    // Wait for AJAX to finish.
+    $this->minkContext->iWaitForAjaxToFinish();
+  }
+
+
 }
