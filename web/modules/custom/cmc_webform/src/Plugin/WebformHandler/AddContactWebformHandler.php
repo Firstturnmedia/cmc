@@ -96,38 +96,46 @@ class AddContactWebformHandler extends WebformHandlerBase {
       $element_options[$element_key] = $element['#title'];
     }
 
-    $form['email'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Email'),
-      '#description' => $this->t('Select the webform element to map to Contact email'),
-      '#options' => $element_options,
-      '#required' => TRUE,
-      '#default_value' => $this->configuration['email'],
-      '#empty_value' => '',
-      '#empty_option' => '- Select Contact Field -',
-    ];
+    if (isset($element_options)) {
+      $form['email'] = [
+        '#type' => 'select',
+        '#title' => $this->t('Email'),
+        '#description' => $this->t('Select the webform element to map to Contact email'),
+        '#options' => $element_options,
+        '#required' => TRUE,
+        '#default_value' => $this->configuration['email'],
+        '#empty_value' => '',
+        '#empty_option' => '- Select Contact Field -',
+      ];
 
-    $form['first_name'] = [
-      '#type' => 'select',
-      '#title' => $this->t('First Name'),
-      '#description' => $this->t('Select the webform element to map to Contact first name'),
-      '#options' => $element_options,
-      '#required' => TRUE,
-      '#default_value' => $this->configuration['first_name'],
-      '#empty_value' => '',
-      '#empty_option' => '- Select Contact Field -',
-    ];
+      $form['first_name'] = [
+        '#type' => 'select',
+        '#title' => $this->t('First Name'),
+        '#description' => $this->t('Select the webform element to map to Contact first name'),
+        '#options' => $element_options,
+        '#required' => TRUE,
+        '#default_value' => $this->configuration['first_name'],
+        '#empty_value' => '',
+        '#empty_option' => '- Select Contact Field -',
+      ];
 
-    $form['last_name'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Last Name'),
-      '#description' => $this->t('Select the webform element to map to Contact last name'),
-      '#options' => $element_options,
-      '#required' => TRUE,
-      '#default_value' => $this->configuration['last_name'],
-      '#empty_value' => '',
-      '#empty_option' => '- Select Contact Field -',
-    ];
+      $form['last_name'] = [
+        '#type' => 'select',
+        '#title' => $this->t('Last Name'),
+        '#description' => $this->t('Select the webform element to map to Contact last name'),
+        '#options' => $element_options,
+        '#required' => TRUE,
+        '#default_value' => $this->configuration['last_name'],
+        '#empty_value' => '',
+        '#empty_option' => '- Select Contact Field -',
+      ];
+    }
+    else {
+      $form['message'] = [
+        '#type' => 'item',
+        '#markup' => 'Webform elements will appear here for mapping. Please add some and come back.',
+      ];
+    }
 
     return $form;
   }

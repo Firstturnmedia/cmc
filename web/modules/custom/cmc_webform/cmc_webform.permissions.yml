@@ -1,0 +1,4 @@
+administer cmc webform:
+  title: 'administer cmc webform'
+  description: 'Access the cmc webform configuration options.'
+  restrict access: TRUE
