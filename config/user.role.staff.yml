@@ -22,6 +22,7 @@ permissions:
   - 'add contact entities'
   - 'add individual contact'
   - 'administer cmc mailchimp'
+  - 'administer cmc webform'
   - 'administer contact entities'
   - 'administer mailchimp'
   - 'administer mailchimp campaigns'
