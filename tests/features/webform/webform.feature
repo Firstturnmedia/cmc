@@ -37,7 +37,7 @@ Feature: Webform Submission
     And I fill in "Title" with "First Name"
     And I wait "2" seconds
     # Click save
-    And I click on the element ".webform-modal .ui-dialog-buttonset button.button--primary"
+    And I click on the element "#drupal-off-canvas .button--primary"
     And I wait for AJAX to finish
     Then I should see "first_name"
 
@@ -49,7 +49,7 @@ Feature: Webform Submission
     And I fill in "Title" with "Last Name"
     And I wait "2" seconds
     # Click save
-    And I click on the element ".webform-modal .ui-dialog-buttonset button.button--primary"
+    And I click on the element "#drupal-off-canvas .button--primary"
     And I wait for AJAX to finish
     Then I should see "last_name"
 
@@ -61,7 +61,7 @@ Feature: Webform Submission
     And I fill in "Title" with "Email"
     And I wait "2" seconds
     # Click save
-    And I click on the element ".webform-modal .ui-dialog-buttonset button.button--primary"
+    And I click on the element "#drupal-off-canvas .button--primary"
     And I wait for AJAX to finish
     Then I should see "email"
 
@@ -78,7 +78,7 @@ Feature: Webform Submission
     And I fill in a field with "blue" using css selector ".form-item-properties-options-custom-options-items-2-value input"
     And I wait "2" seconds
     # Click save
-    And I click on the element ".webform-modal .ui-dialog-buttonset button.button--primary"
+    And I click on the element "#drupal-off-canvas .button--primary"
     And I wait for AJAX to finish
     Then I should see "What is your favorite color?"
 
@@ -131,7 +131,7 @@ Feature: Webform Submission
     And I select "first_name" from "First Name"
     And I select "last_name" from "Last Name"
     # Click save
-    And I click on the element ".webform-modal .ui-dialog-buttonset button.button--primary"
+    And I click on the element "#drupal-off-canvas .button--primary"
     And I wait for AJAX to finish
     # @todo add summary to table, and test for that, better test that way!
     Then I should see "add_contact"
