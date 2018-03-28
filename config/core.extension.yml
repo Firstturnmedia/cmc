@@ -54,7 +54,6 @@ module:
   views_ui: 0
   webform: 0
   webform_ui: 0
-  contribute: 1
   menu_link_content: 1
   views: 10
   cm_bootstrap: 1000
