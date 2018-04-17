@@ -1,0 +1,17 @@
+name: carroll-cmc
+recipe: pantheon
+config:
+  framework: drupal8
+  site: carroll-cmc
+  id: 433e8db8-16c3-441e-bc3b-e533ede92147
+  web: web
+  xdebug: true
+tooling:
+  pwd:
+    service: appserver
+    cmd: pwd
+  # Hack to get drupal console to work using "lando drupal"
+  drupal:
+    cmd:
+      - "/app/vendor/bin/drupal"
+      - "--root=/app/web"
