@@ -305,10 +305,20 @@ function cmc_mailchimp_cmc_webform_contact_added($contact) {
     }
   }
 
-  // @todo add merge vars value for first and last name?
+  // Add merge vars for first and last name
+  // Defaults to empty string, since the webform name fields are required (yet)
+  $merge_vars['FNAME'] = '';
+  if (isset($contact->first_name->value)) {
+    $merge_vars['FNAME'] = $contact->first_name->value;
+  }
+
+  $merge_vars['LNAME'] = '';
+  if (isset($contact->first_name->value)) {
+    $merge_vars['LNAME'] = $contact->last_name->value;
+  }
 
   // Send data to mailchimp
-  $result = mailchimp_subscribe($mc_list_id, $email, $merge_vars = NULL, $interest_groups, $double_optin = FALSE, $format = 'html');
+  $result = mailchimp_subscribe($mc_list_id, $email, $merge_vars, $interest_groups, $double_optin = FALSE, $format = 'html');
 
   // @todo record mailchimp subscribe activity?
 }
