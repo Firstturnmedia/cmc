@@ -6,6 +6,16 @@ config:
   id: 433e8db8-16c3-441e-bc3b-e533ede92147
   web: web
   xdebug: true
+services:
+  appserver:
+    overrides:
+      services:
+        environment:
+          BEHAT_PARAMS: >-
+            {"extensions" : {"Behat\\MinkExtension" : {"base_url" :
+            "http://nginx/"}, "Drupal\\DrupalExtension" : {"drush" :   {
+            "root":  "/app/web" }}}}
+# Tooling
 tooling:
   pwd:
     service: appserver
@@ -15,3 +25,17 @@ tooling:
     cmd:
       - "/app/vendor/bin/drupal"
       - "--root=/app/web"
+  # Testing
+  phplint:
+    service: appserver
+    cmd: /app/vendor/bin/phplint
+  phpcs:
+    service: appserver
+    cmd: /app/vendor/bin/phpcs
+  phpunit:
+    service: appserver
+    cmd: /app/vendor/bin/phpunit
+  # Add behat cmd
+  behat:
+    service: appserver
+    cmd: /app/vendor/bin/behat

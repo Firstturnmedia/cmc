@@ -4,18 +4,25 @@
 default:
   suites:
     default:
-      paths:
-        - %paths.base%/features
-        - %paths.base%/site-features
+      #paths:
+      #  - %paths.base%/features
       contexts:
         - FeatureContext
         - Drupal\DrupalExtension\Context\DrupalContext
         - Drupal\DrupalExtension\Context\MinkContext
+        - Drupal\DrupalExtension\Context\MessageContext
+        - Drupal\DrupalExtension\Context\DrushContext
   extensions:
     Behat\MinkExtension:
+      files_path: "%paths.base%/features/fixtures/"
+      #base_url: 'http://nginx:80'
       goutte: ~
       selenium2: ~
-      files_path: './data-files'
     Drupal\DrupalExtension:
-      blackbox: ~
       api_driver: 'drush'
+      drush:
+        alias: 'local'
+        root: '/app/web'
+      blackbox: ~
+      drupal:
+        drupal_root: '/app/web'
