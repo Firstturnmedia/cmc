@@ -1,5 +1,8 @@
 name: carroll-cmc
 recipe: pantheon
+# Add docker-compose for behat chromedriver
+compose:
+  - docker-compose.yml
 config:
   framework: drupal8
   site: carroll-cmc
@@ -13,7 +16,7 @@ services:
         environment:
           BEHAT_PARAMS: >-
             {"extensions" : {"Behat\\MinkExtension" : {"base_url" :
-            "http://nginx/"}, "Drupal\\DrupalExtension" : {"drush" :   {
+            "http://nginx/", "files_path" : "/app/web/tests/fixtures/"}, "Drupal\\DrupalExtension" : {"drush" :   {
             "root":  "/app/web" }}}}
 # Tooling
 tooling:
@@ -25,7 +28,7 @@ tooling:
     cmd:
       - "/app/vendor/bin/drupal"
       - "--root=/app/web"
-  # Testing
+  # PHP testing
   phplint:
     service: appserver
     cmd: /app/vendor/bin/phplint

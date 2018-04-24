@@ -4,25 +4,34 @@
 default:
   suites:
     default:
-      #paths:
-      #  - %paths.base%/features
+      paths:
+        - %paths.base%/features
       contexts:
         - FeatureContext
         - Drupal\DrupalExtension\Context\DrupalContext
         - Drupal\DrupalExtension\Context\MinkContext
-        - Drupal\DrupalExtension\Context\MessageContext
-        - Drupal\DrupalExtension\Context\DrushContext
   extensions:
     Behat\MinkExtension:
-      files_path: "%paths.base%/features/fixtures/"
-      #base_url: 'http://nginx:80'
-      goutte: ~
-      selenium2: ~
+      files_path: "%paths.base%/fixtures/"
+      base_url: http://nginx
+      browser_name: chrome
+      sessions:
+        default:
+          goutte:
+            guzzle_parameters:
+              verify: false
+        javascript:
+          selenium2:
+            wd_host: http://chromedriver:4444/wd/hub
+    # @todo add this back and get it working
+    #Bex\Behat\ScreenshotExtension:
+    #  image_drivers:
+    #    local:
+    #      screenshot_directory: /app/tmp
+    #      clear_screenshot_directory: false
+    #  screenshot_taking_mode: failed_scenarios
     Drupal\DrupalExtension:
-      api_driver: 'drush'
-      drush:
-        alias: 'local'
-        root: '/app/web'
-      blackbox: ~
       drupal:
         drupal_root: '/app/web'
+      blackbox: ~
+      api_driver: 'drupal'
