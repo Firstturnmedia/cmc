@@ -63,8 +63,10 @@ If you specify a branch, such as 1.x you must add -dev to the end of the version
 
     $ composer update drupal/config_ignore
 
+## Local Behat Testing Using Lando
+    $ lando behat --config=/app/tests/behat-pantheon.yml
 
-## Local Behat Testing
+## Local Behat Testing (MAMP)
 
 #### Start Selenium and Chromedriver
 
