@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  chromedriver:
+    image: robcherry/docker-chromedriver:latest
+    volumes:
+      - ${LANDO_APP_ROOT}/:/app/
+    expose:
+      - "4444"
+    environment:
+      CHROMEDRIVER_WHITELISTED_IPS: ""
+      CHROMEDRIVER_URL_BASE: "/wd/hub"
+    security_opt:
+      - seccomp:unconfined
