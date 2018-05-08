@@ -65,12 +65,17 @@ jobs:
               fi
               sudo dpkg -i /tmp/lando-latest.deb
               lando version
-
+        # Setup Lando
         - run:
-            name: Generate Full Repo
+            name: Setup Lando
             command: |
-              echo "Running composer build-assets to generate the full repo..."
-              composer -n build-assets
+              lando start
+              lando composer install
+        #- run:
+        #    name: Generate Full Repo
+        #    command: |
+        #      echo "Running composer build-assets to generate the full repo..."
+        #      composer -n build-assets
 
         - restore_cache:
             keys:
@@ -81,24 +86,24 @@ jobs:
             paths:
                 - $(TERMINUS_PLUGINS_DIR:-~/.terminus/plugins)
 
-        - run:
-            name: Generate Full Repo Sanity Checks
-            command: |
-              pwd
-              git status
-              terminus --version
+        #- run:
+        #    name: Generate Full Repo Sanity Checks
+        #    command: |
+        #      pwd
+        #      git status
+        #      terminus --version
 
-        - run:
+        #- run:
             # I don't know if this does anything?
             # Set TERMINUS_ENV and related environment variables.
             # https://github.com/pantheon-systems/docker-build-tools-ci/blob/1.x/scripts/set-environment
-            name: environment
-            command: /build-tools-ci/scripts/set-environment
+        #    name: environment
+        #    command: /build-tools-ci/scripts/set-environment
 
-        - run:
-            name: Deploy to Pantheon
-            command: |
-              .circleci/scripts/custom/deploy-pantheon.sh
+        #- run:
+        #    name: Deploy to Pantheon
+        #    command: |
+        #      .circleci/scripts/custom/deploy-pantheon.sh
 
     #build_deploy_and_test:
     #    <<: *defaults
