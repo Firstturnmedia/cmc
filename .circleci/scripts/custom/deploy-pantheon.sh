@@ -5,6 +5,8 @@
 # Multidev
 if [ "$CIRCLE_BRANCH" != "master" ]; then
   # echo a sanity check that we're not on master
+  echo "pwd is..."
+  pwd
   echo "Branch is not master, so to the multidevs we go!"
   # Log in w/ terminus
   #terminus -n auth:login --machine-token="$TERMINUS_TOKEN"
