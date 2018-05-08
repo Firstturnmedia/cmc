@@ -86,32 +86,23 @@ jobs:
       #    command: |
       #      lando behat --config=/app/tests/behat-pantheon.yml
       # Deploy to Pantheon
+      - run:
+          name: Deploy to Pantheon
+          command: |
+            pwd
+            cd ..
+            pwd
+            .circleci/scripts/custom/deploy-pantheon.sh
+      # Deploy to Pantheon
       #- run:
       #    name: Deploy to Pantheon
       #    command: |
       #      lando ssh -c "/app/.circleci/scripts/custom/deploy-pantheon.sh"
 
-  # Build, generate full repo and deploy to Pantheon
-  build:
-    <<: *defaults
-    working_directory: ~/drops_8_composer
-    machine:
-      docker:
-        - image: quay.io/pantheon-public/build-tools-ci:1.x
-    # Steps
-    steps:
-      - checkout
-    # Generate Full Repo
-      - run:
-        name: Generate Full Repo
-        command: |
-          pwd
-          echo "Running composer build-assets to generate the full repo..."
-          composer -n build-assets
 
 workflows:
   version: 2
   build_and_test:
     jobs:
       - test
-      - build
+      #- build
