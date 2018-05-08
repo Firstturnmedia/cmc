@@ -46,7 +46,7 @@ if [ "$CIRCLE_BRANCH" != "master" ]; then
 
   # Run update.php
   #lando terminus -n drush "$TERMINUS_SITE.$CIRCLE_BRANCH" -- updatedb -y
-  lando drush "$TERMINUS_SITE.$CIRCLE_BRANCH" updb -y
+  lando drush @pantheon.carroll-cmc.cci-lando updb -y
 
   # Run config-import -y
   #lando terminus -n drush "$TERMINUS_SITE.$CIRCLE_BRANCH" -- config-import --yes
