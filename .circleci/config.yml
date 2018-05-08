@@ -43,6 +43,25 @@ jobs:
         <<: *defaults
         steps:
             - checkout
+            # Startup
+            - run:
+                name: Startup checks
+                command: |
+                  sudo docker --version
+                  sudo docker-compose --version
+                  lsb_release -a
+                  export -p
+            # Get Lando
+            - run:
+                name: Get Lando
+                command: |
+                  sudo apt-get update
+                  sudo apt-get install cgroup-bin -y
+                  if [ ! -f /tmp/lando-latest.deb ]; then
+                    curl -fsSL -o /tmp/lando-latest.deb http://installer.kalabox.io/lando-latest-dev.deb
+                  fi
+                  sudo dpkg -i /tmp/lando-latest.deb
+                  lando version
 
             - run:
                 name: Generate Full Repo
