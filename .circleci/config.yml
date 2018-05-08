@@ -2,7 +2,7 @@
 defaults: &defaults
   #docker:
   #  - image: quay.io/pantheon-public/build-tools-ci:1.x
-  working_directory: ~/drops_8_composer
+  #working_directory: ~/drops_8_composer
   environment:
     #=========================================================================
     # In addition to the environment variables defined in this file, also
@@ -38,76 +38,80 @@ defaults: &defaults
 
 version: 2
 jobs:
-    # @todo: common initialization: 'composer install' for the site-under-test
-    build:
-      machine:
-        image: circleci/classic:201711-01
-        <<: *defaults
-      # Steps
-      steps:
-        - checkout
-        # Startup
-        - run:
-            name: Startup checks
-            command: |
-              sudo docker --version
-              sudo docker-compose --version
-              lsb_release -a
-              export -p
-        # Get Lando
-        - run:
-            name: Get Lando
-            command: |
-              sudo apt-get update
-              sudo apt-get install cgroup-bin -y
-              if [ ! -f /tmp/lando-latest.deb ]; then
-                curl -fsSL -o /tmp/lando-latest.deb http://installer.kalabox.io/lando-latest-dev.deb
-              fi
-              sudo dpkg -i /tmp/lando-latest.deb
-              lando version
-        # Setup Lando Site
-        - run:
-            name: Setup Lando Site
-            command: |
-              lando start
-              lando composer install
-              lando composer prepare-for-pantheon
-              lando terminus auth:login --machine-token=$TERMINUS_TOKEN
-              lando pull --database=dev --code=none --files=none
-              cd web
-              lando drush updb -y
-              lando drush config-import -y
-              lando drush cr
-              git status
-        # Lando Behat Tests
-        #- run:
-        #    name: Lando Behat Tests
-        #    command: |
-        #      lando behat --config=/app/tests/behat-pantheon.yml
-        # Deploy to Pantheon
-        - run:
-            name: Deploy to Pantheon
-            command: |
-              lando ssh -c "/app/.circleci/scripts/custom/deploy-pantheon.sh"
+  # @todo: common initialization: 'composer install' for the site-under-test
+  test:
+    working_directory: ~/lando
+    machine:
+      image: circleci/classic:201711-01
+      <<: *defaults
+    # Steps
+    steps:
+      - checkout
+      # Startup
+      - run:
+          name: Startup checks
+          command: |
+            sudo docker --version
+            sudo docker-compose --version
+            lsb_release -a
+            export -p
+      # Get Lando
+      - run:
+          name: Get Lando
+          command: |
+            sudo apt-get update
+            sudo apt-get install cgroup-bin -y
+            if [ ! -f /tmp/lando-latest.deb ]; then
+              curl -fsSL -o /tmp/lando-latest.deb http://installer.kalabox.io/lando-latest-dev.deb
+            fi
+            sudo dpkg -i /tmp/lando-latest.deb
+            lando version
+      # Setup Lando Site
+      - run:
+          name: Setup Lando Site
+          command: |
+            lando start
+            lando composer install
+            lando composer prepare-for-pantheon
+            lando terminus auth:login --machine-token=$TERMINUS_TOKEN
+            lando pull --database=dev --code=none --files=none
+            cd web
+            lando drush updb -y
+            lando drush config-import -y
+            lando drush cr
+            git status
+      # Lando Behat Tests
+      #- run:
+      #    name: Lando Behat Tests
+      #    command: |
+      #      lando behat --config=/app/tests/behat-pantheon.yml
+      # Deploy to Pantheon
+      #- run:
+      #    name: Deploy to Pantheon
+      #    command: |
+      #      lando ssh -c "/app/.circleci/scripts/custom/deploy-pantheon.sh"
 
-    #build_deploy_and_test:
-    #    <<: *defaults
-    #    steps:
-    #        - checkout
-    #
-    #            - restore_cache:
-    #            keys:
-    #                - terminus-install
-
-    # TODO:
-    # 04-merge-master
-    # 09-cleanup-fixtures
+  # Build, generate full repo and deploy to Pantheon
+  build:
+    <<: *defaults
+    working_directory: ~/drops_8_composer
+    machine:
+      docker:
+        - image: quay.io/pantheon-public/build-tools-ci:1.x
+    # Steps
+    steps:
+      - checkout
+    # Generate Full Repo
+      - run:
+        name: Generate Full Repo
+        command: |
+          pwd
+          echo "Running composer build-assets to generate the full repo..."
+          composer -n build-assets
 
 workflows:
   version: 2
   build_and_test:
     jobs:
-      # Install dev dependencies and do simple tests (sniff, unit tests, etc.)
+      - test
       - build
-      # Build deploy and test on target platform
-      #- build_deploy_and_test
