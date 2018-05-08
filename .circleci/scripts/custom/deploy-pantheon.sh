@@ -7,7 +7,10 @@ if [ "$CIRCLE_BRANCH" != "master" ]; then
   # echo a sanity check that we're not on master
   echo "Branch is not master, so to the multidevs we go!"
   # Log in w/ terminus
-  terminus -n auth:login --machine-token="$TERMINUS_TOKEN"
+  #terminus -n auth:login --machine-token="$TERMINUS_TOKEN"
+  echo "Terminus site : $TERMINUS_SITE"
+  echo "Show site multidevs"
+  terminus multidev:list $TERMINUS_SITE
 
   # Check if multidev aleeady exists. If not, create, else, update existing
   if ! terminus multidev:list $TERMINUS_SITE --field id | grep $CIRCLE_BRANCH; then
