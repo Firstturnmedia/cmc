@@ -100,14 +100,14 @@ jobs:
             command: |
               .circleci/scripts/custom/deploy-pantheon.sh
 
-    build_deploy_and_test:
-        <<: *defaults
-        steps:
-            - checkout
-
-            - restore_cache:
-                keys:
-                    - terminus-install
+    #build_deploy_and_test:
+    #    <<: *defaults
+    #    steps:
+    #        - checkout
+    #
+    #            - restore_cache:
+    #            keys:
+    #                - terminus-install
 
     # TODO:
     # 04-merge-master
