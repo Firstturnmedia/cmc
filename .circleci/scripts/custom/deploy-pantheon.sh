@@ -45,10 +45,12 @@ if [ "$CIRCLE_BRANCH" != "master" ]; then
   git push -f origin $CIRCLE_BRANCH
 
   # Run update.php
-  lando terminus -n drush "$TERMINUS_SITE.$CIRCLE_BRANCH" -- updatedb -y
+  #lando terminus -n drush "$TERMINUS_SITE.$CIRCLE_BRANCH" -- updatedb -y
+  lando drush "$TERMINUS_SITE.$CIRCLE_BRANCH" updb -y
 
   # Run config-import -y
-  lando terminus -n drush "$TERMINUS_SITE.$CIRCLE_BRANCH" -- config-import --yes
+  #lando terminus -n drush "$TERMINUS_SITE.$CIRCLE_BRANCH" -- config-import --yes
+  lando drush "$TERMINUS_SITE.$CIRCLE_BRANCH" cim -y
 
   # Clear drupal cache
 fi
