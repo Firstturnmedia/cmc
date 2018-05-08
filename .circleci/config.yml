@@ -43,61 +43,62 @@ jobs:
       machine:
         image: circleci/classic:201711-01
         <<: *defaults
-        steps:
-            - checkout
-            # Startup
-            - run:
-                name: Startup checks
-                command: |
-                  sudo docker --version
-                  sudo docker-compose --version
-                  lsb_release -a
-                  export -p
-            # Get Lando
-            - run:
-                name: Get Lando
-                command: |
-                  sudo apt-get update
-                  sudo apt-get install cgroup-bin -y
-                  if [ ! -f /tmp/lando-latest.deb ]; then
-                    curl -fsSL -o /tmp/lando-latest.deb http://installer.kalabox.io/lando-latest-dev.deb
-                  fi
-                  sudo dpkg -i /tmp/lando-latest.deb
-                  lando version
+      # Steps
+      steps:
+        - checkout
+        # Startup
+        - run:
+            name: Startup checks
+            command: |
+              sudo docker --version
+              sudo docker-compose --version
+              lsb_release -a
+              export -p
+        # Get Lando
+        - run:
+            name: Get Lando
+            command: |
+              sudo apt-get update
+              sudo apt-get install cgroup-bin -y
+              if [ ! -f /tmp/lando-latest.deb ]; then
+                curl -fsSL -o /tmp/lando-latest.deb http://installer.kalabox.io/lando-latest-dev.deb
+              fi
+              sudo dpkg -i /tmp/lando-latest.deb
+              lando version
 
-            - run:
-                name: Generate Full Repo
-                command: |
-                  echo "Running composer build-assets to generate the full repo..."
-                  composer -n build-assets
+        - run:
+            name: Generate Full Repo
+            command: |
+              echo "Running composer build-assets to generate the full repo..."
+              composer -n build-assets
 
-            - restore_cache:
-                keys:
-                    - terminus-install
+        - restore_cache:
+            keys:
+                - terminus-install
 
-            - save_cache:
-                key: terminus-install
-                paths:
-                    - $(TERMINUS_PLUGINS_DIR:-~/.terminus/plugins)
+        - save_cache:
+            key: terminus-install
+            paths:
+                - $(TERMINUS_PLUGINS_DIR:-~/.terminus/plugins)
 
-            - run:
-                name: Generate Full Repo Sanity Checks
-                command: |
-                  pwd
-                  git status
-                  terminus --version
+        - run:
+            name: Generate Full Repo Sanity Checks
+            command: |
+              pwd
+              git status
+              terminus --version
 
-            - run:
-                # I don't know if this does anything?
-                # Set TERMINUS_ENV and related environment variables.
-                # https://github.com/pantheon-systems/docker-build-tools-ci/blob/1.x/scripts/set-environment
-                name: environment
-                command: /build-tools-ci/scripts/set-environment
+        - run:
+            # I don't know if this does anything?
+            # Set TERMINUS_ENV and related environment variables.
+            # https://github.com/pantheon-systems/docker-build-tools-ci/blob/1.x/scripts/set-environment
+            name: environment
+            command: /build-tools-ci/scripts/set-environment
 
-            - run:
-                name: Deploy to Pantheon
-                command: |
-                  .circleci/scripts/custom/deploy-pantheon.sh
+        - run:
+            name: Deploy to Pantheon
+            command: |
+              .circleci/scripts/custom/deploy-pantheon.sh
 
     build_deploy_and_test:
         <<: *defaults
