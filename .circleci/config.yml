@@ -85,10 +85,10 @@ jobs:
             command: |
               lando behat --config=/app/tests/behat-pantheon.yml
         # Deploy to Pantheon
-        #- run:
-        #    name: Deploy to Pantheon
-        #    command: |
-        #      lando ssh -c "/app/.circleci/scripts/custom/deploy-pantheon.sh"
+        - run:
+            name: Deploy to Pantheon
+            command: |
+              lando ssh -c "/app/.circleci/scripts/custom/deploy-pantheon.sh"
 
     #build_deploy_and_test:
     #    <<: *defaults
