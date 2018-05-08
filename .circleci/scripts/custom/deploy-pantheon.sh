@@ -38,11 +38,17 @@ if [ "$CIRCLE_BRANCH" != "master" ]; then
   git config user.email "${GIT_EMAIL}" && git config user.name "${CIRCLE_USERNAME}"
 
   # Git add and commit
+  git status
   git add -A
   git commit -m "Circle CI Build: $CIRCLE_BUILD_URL" -m "- $GIT_COMMIT_MSG"
 
   # Push code to multidev
-  git push -f origin $CIRCLE_BRANCH
+  if git push -f origin $CIRCLE_BRANCH
+  then
+    echo "Code pushed to Pantheon"
+  else
+    exit 1
+  fi
 
   # Go back to lando dir for drush commands
   cd /home/circleci/lando/
