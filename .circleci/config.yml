@@ -51,6 +51,7 @@ jobs:
       - run:
           name: Startup checks
           command: |
+            pwd
             sudo docker --version
             sudo docker-compose --version
             lsb_release -a
@@ -66,6 +67,7 @@ jobs:
             fi
             sudo dpkg -i /tmp/lando-latest.deb
             lando version
+            pwd
       # Setup Lando Site
       - run:
           name: Setup Lando Site
