@@ -1,8 +1,5 @@
 # https://circleci.com/docs/2.0/workflows/#using-workspaces-to-share-data-among-jobs
 defaults: &defaults
-  #docker:
-  #  - image: quay.io/pantheon-public/build-tools-ci:1.x
-  #working_directory: ~/drops_8_composer
   environment:
     #=========================================================================
     # In addition to the environment variables defined in this file, also
@@ -84,26 +81,19 @@ jobs:
             git status
             pwd
       # Lando Behat Tests
-      #- run:
-      #    name: Lando Behat Tests
-      #    command: |
-      #      lando behat --config=/app/tests/behat-pantheon.yml
+      - run:
+          name: Lando Behat Tests
+          command: |
+            lando behat --config=/app/tests/behat-pantheon.yml
       # Deploy to Pantheon
       - run:
           name: Deploy to Pantheon
           command: |
             pwd
             .circleci/scripts/custom/deploy-pantheon.sh
-      # Deploy to Pantheon
-      #- run:
-      #    name: Deploy to Pantheon
-      #    command: |
-      #      lando ssh -c "/app/.circleci/scripts/custom/deploy-pantheon.sh"
-
-
+# Workflows
 workflows:
   version: 2
   build_and_test:
     jobs:
       - test
-      #- build
