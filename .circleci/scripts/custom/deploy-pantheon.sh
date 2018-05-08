@@ -8,6 +8,29 @@ if [ "$CIRCLE_BRANCH" != "master" ]; then
   echo "pwd is..."
   pwd
   echo "Branch is not master, so to the multidevs we go!"
+
+  # Remove any existing build
+  rm -rf /tmp/pantheon
+
+  # Move to /tmp
+  cd /tmp
+  pwd
+
+  # Git clone from Pantheon
+  git clone -b $CIRCLE_BRANCH ssh://codeserver.dev.$PANTHEON_SITE@codeserver.dev.$PANTHEON_SITE.drush.in:2222/~/repository.git pantheon
+
+  # Delete everything except the .git dir
+  rm -rf /tmp/pantheon/*
+
+  # Copy "full repo" code over
+  cp -rf /home/circleci/lando/* /tmp/pantheon/
+
+  # Move to pantheon dir
+  cd /tmp/pantheon
+  pwd
+
+  git status
+   
   # Log in w/ terminus
   #terminus -n auth:login --machine-token="$TERMINUS_TOKEN"
   echo "Terminus site : $TERMINUS_SITE"
