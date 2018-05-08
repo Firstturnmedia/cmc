@@ -7,13 +7,13 @@ if [ "$CIRCLE_BRANCH" != "master" ]; then
   # echo a sanity check that we're not on master
   echo "Branch is not master, so to the multidevs we go!"
   # Log in w/ terminus
-  lando terminus -n auth:login --machine-token="$TERMINUS_TOKEN"
+  terminus -n auth:login --machine-token="$TERMINUS_TOKEN"
 
   # Check if multidev aleeady exists. If not, create, else, update existing
-  if ! lando terminus multidev:list $TERMINUS_SITE --field id | grep $CIRCLE_BRANCH; then
+  if ! terminus multidev:list $TERMINUS_SITE --field id | grep $CIRCLE_BRANCH; then
     echo "Creating multidev $CIRCLE_BRANCH-$TERMINUS_SITE.dev"
-    lando terminus env:wake "$TERMINUS_SITE.dev"
-    lando terminus multidev:create $TERMINUS_SITE.dev $CIRCLE_BRANCH
+    terminus env:wake "$TERMINUS_SITE.dev"
+    terminus multidev:create $TERMINUS_SITE.dev $CIRCLE_BRANCH
     else
       echo "Existing multidev $CIRCLE_BRANCH-$TERMINUS_SITE will be updated."
   fi
@@ -50,10 +50,10 @@ if [ "$CIRCLE_BRANCH" != "master" ]; then
   git push -f origin $CIRCLE_BRANCH
 
   # Run update.php
-  lando terminus -n drush "$TERMINUS_SITE.$CIRCLE_BRANCH" -- updatedb -y
+  terminus -n drush "$TERMINUS_SITE.$CIRCLE_BRANCH" -- updatedb -y
 
   # Run config-import -y
-  lando terminus -n drush "$TERMINUS_SITE.$CIRCLE_BRANCH" -- config-import --yes
+  terminus -n drush "$TERMINUS_SITE.$CIRCLE_BRANCH" -- config-import --yes
 
   # Clear drupal cache
 fi
