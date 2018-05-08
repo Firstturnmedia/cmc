@@ -13,7 +13,7 @@ if [ "$CIRCLE_BRANCH" != "master" ]; then
   echo "Terminus site : $TERMINUS_SITE"
   echo "Circle branch: $CIRCLE_BRANCH"
   echo "Show site multidevs"
-  terminus multidev:list $TERMINUS_SITE
+  lando terminus multidev:list $TERMINUS_SITE
 fi
 
 # Master branch

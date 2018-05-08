@@ -82,6 +82,7 @@ jobs:
             lando drush config-import -y
             lando drush cr
             git status
+            pwd
       # Lando Behat Tests
       #- run:
       #    name: Lando Behat Tests
