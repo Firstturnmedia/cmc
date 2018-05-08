@@ -44,6 +44,10 @@ if [ "$CIRCLE_BRANCH" != "master" ]; then
   # Push code to multidev
   git push -f origin $CIRCLE_BRANCH
 
+  # Go back to lando dir for drush commands
+  cd /home/circleci/lando/
+  pwd
+
   # Run update.php
   lando drush @pantheon.$TERMINUS_SITE.$CIRCLE_BRANCH updb -y
 
