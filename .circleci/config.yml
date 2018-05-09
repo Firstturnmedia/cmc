@@ -53,8 +53,10 @@ jobs:
             sudo docker-compose --version
             lsb_release -a
             export -p
-            sudo apt-get install curl php5-cli
-            curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
+            sudo apt-get update
+            sudo apt-get install curl
+            sudo curl -s https://getcomposer.org/installer | php
+            sudo mv composer.phar /usr/local/bin/composer
       # Get Lando
       - run:
           name: Get Lando
