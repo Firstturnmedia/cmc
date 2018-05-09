@@ -69,8 +69,8 @@ jobs:
       - run:
           name: Setup Lando Site
           command: |
-            lando composer -n build-assets
             lando start
+            lando composer -n build-assets
             lando terminus auth:login --machine-token=$TERMINUS_TOKEN
             lando pull --database=dev --code=none --files=none
             cd web
