@@ -29,7 +29,10 @@ if [ "$CIRCLE_BRANCH" != "master" ]; then
   rm -rf /tmp/pantheon/*
 
   # Copy "full repo" code over
-  cp -rf /home/circleci/lando/. /tmp/pantheon/
+  cp -rf /home/circleci/lando/* /tmp/pantheon/
+
+  # Copy the .gitignore file from lando to pantheon
+  yes | /bin/cp -f /home/circleci/lando/.gitignore /tmp/pantheon/.gitignore
 
   # Move to pantheon dir
   cd /tmp/pantheon
@@ -39,7 +42,7 @@ if [ "$CIRCLE_BRANCH" != "master" ]; then
 
   # Git add and commit
   git status
-  git add .
+  git add -A
   git commit -m "Circle CI Build: $CIRCLE_BUILD_URL" -m "- $GIT_COMMIT_MSG"
 
   # Push code to multidev
