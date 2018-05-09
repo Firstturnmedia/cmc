@@ -53,10 +53,6 @@ jobs:
             sudo docker-compose --version
             lsb_release -a
             export -p
-            sudo apt-get update
-            sudo apt-get install curl
-            sudo curl -s https://getcomposer.org/installer | php
-            sudo mv composer.phar /usr/local/bin/composer
       # Get Lando
       - run:
           name: Get Lando
@@ -73,7 +69,7 @@ jobs:
       - run:
           name: Setup Lando Site
           command: |
-            composer -n build-assets
+            lando composer -n build-assets
             lando start
             lando terminus auth:login --machine-token=$TERMINUS_TOKEN
             lando pull --database=dev --code=none --files=none
